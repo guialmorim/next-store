@@ -62,5 +62,9 @@ export default async (
 				response.status(500).json({ message: 'algo deu errado', error: error });
 			}
 			break;
+		default:
+			response.setHeader('Allow', 'POST');
+			response.status(405).end('Method Not Allowed');
+			break;
 	}
 };
