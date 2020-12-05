@@ -2,9 +2,9 @@
 
 <h1 align="center">Next.js ❤️ MongoDB</h1>
   
-[LIVE EXAMPLE!]()
+<!-- see an [LIVE EXAMPLE!]() -->
 
-An e-commerce using [**Next.js**](https://github.com/zeit/next.js/) and [**MongoDB**](https://www.mongodb.com/), designed with simplicity for learning and real-world applicability in mind.
+An complete e-commerce web application using [**Next.js**](https://github.com/zeit/next.js/) and [**MongoDB**](https://www.mongodb.com/), designed with simplicity for learning and real-world applicability in mind.
 
 <h3 align="center">Dependencies</h3>
 
