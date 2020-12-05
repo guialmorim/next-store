@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
-import Product from '@/Models/product';
+import Address, { IAddress } from '@/Models/address';
+import { NativeError } from 'mongoose';
 
 interface ResponseType {
 	message: string;
@@ -12,29 +13,33 @@ export default async (
 	request: NextApiRequest,
 	response: NextApiResponse //<ResponseType>
 ): Promise<void> => {
-	const { method, body } = request;
+	const {
+		method,
+		body,
+		query: { id },
+	} = request;
 
 	switch (method) {
 		case 'GET':
 			try {
-				const products = await Product.find();
-				if (products.length > 0) {
-					response.status(200).json(products);
+				const address = await Address.findById(id)
+					.populate({
+						path: 'user',
+						select: ['name', 'email'],
+					})
+					.exec();
+
+				if (address) {
+					response.status(200).json(address);
 				} else {
-					response.status(404).json({ message: 'nenhum produto encontrado.' });
+					response.status(404).json({ message: 'nenhum endereço encontrado.' });
 				}
 			} catch (error) {
-				response.status(500).json({ message: 'algo deu errado', error: error });
+				response.status(404).json({ message: 'endereço não encontrado' });
 			}
 			break;
-		case 'POST':
+		case 'PUT':
 			try {
-				const product = await Product.create(body);
-				if (product) {
-					response.status(200).json({ message: 'Produto criado' });
-				} else {
-					response.status(400).json({ message: 'algo deu errado' });
-				}
 			} catch (error) {
 				response.status(500).json({ message: 'algo deu errado', error: error });
 			}

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
-import Product from '@/Models/product';
+import User from '@/Models/user';
 
 interface ResponseType {
 	message: string;
@@ -17,11 +17,11 @@ export default async (
 	switch (method) {
 		case 'GET':
 			try {
-				const products = await Product.find();
-				if (products.length > 0) {
-					response.status(200).json(products);
+				const users = await User.find();
+				if (users.length > 0) {
+					response.status(200).json(users);
 				} else {
-					response.status(404).json({ message: 'nenhum produto encontrado.' });
+					response.status(404).json({ message: 'nenhum usuario encontrado.' });
 				}
 			} catch (error) {
 				response.status(500).json({ message: 'algo deu errado', error: error });
@@ -29,9 +29,9 @@ export default async (
 			break;
 		case 'POST':
 			try {
-				const product = await Product.create(body);
-				if (product) {
-					response.status(200).json({ message: 'Produto criado' });
+				const user = await User.create(body);
+				if (user) {
+					response.status(200).json({ message: 'Usuario criado' });
 				} else {
 					response.status(400).json({ message: 'algo deu errado' });
 				}
