@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
-import User, { IUser } from '@/Models/user';
+import User, { IUser } from '@/models/user';
 import { NativeError } from 'mongoose';
 
 interface ResponseType {

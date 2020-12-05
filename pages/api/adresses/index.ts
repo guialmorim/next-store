@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
-import Address from '@/Models/address';
-import User, { IUser } from '@/Models/user';
+import Address from '@/models/address';
+import User, { IUser } from '@/models/user';
 
 interface ResponseType {
 	message: string;

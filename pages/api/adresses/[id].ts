@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
-import Address, { IAddress } from '@/Models/address';
+import Address, { IAddress } from '@/models/address';
 import { NativeError } from 'mongoose';
 
 interface ResponseType {
