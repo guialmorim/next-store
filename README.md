@@ -1,8 +1,6 @@
 [![Next.js](https://assets.zeit.co/image/upload/v1538361091/repositories/next-js/next-js.png)](https://nextjs.org)
 
 <h1 align="center">Next Store :convenience_store: </h1>
-
-<h2 align="center">Next.js :heart: MongoDB</h2>
   
 <!-- see an [LIVE EXAMPLE!]() -->
 
