@@ -1,8 +1,6 @@
 [![Next.js](https://assets.zeit.co/image/upload/v1538361091/repositories/next-js/next-js.png)](https://nextjs.org)
 
 <h1 align="center">Next.js ❤️ MongoDB</h1>
-
-<div align="center">
   
 [LIVE EXAMPLE!]()
 
@@ -21,9 +19,9 @@ This project uses the following dependencies:
 
 <h3 align="center">Environmental variables</h3>
 
-The environment variables [will be inlined during build time](https://nextjs.org/docs#build-time-configuration)
+The environment variables [will be configured during build time](https://nextjs.org/docs#build-time-configuration)
 
-Environmental variables in this project include:
+Environmental variables in this project:
 
 - `MONGODB_URI` A string de conexão do seu MongoDB (com credenciais).
 - `MONGODB_DB` Nome do seu banco de dados utilizado.
@@ -44,7 +42,7 @@ In production, it is recommended to set the environment variables using the opti
 
 <h2 align="center">Deployment</h2>
 
-This project can be deployed [anywhere Next.js can be deployed](https://nextjs.org/docs/deployment). Make sure to set the environment variables using the options provided by your cloud/hosting providers.
+This project can be deployed with [Vercel](https://vercel.com/) or [anywhere Next.js can be deployed](https://nextjs.org/docs/deployment). Make sure to set the environment variables using the options provided by your hosting providers.
 
 After building using `npm run build`, simply start the server using `npm run start`.
 
