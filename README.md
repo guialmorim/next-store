@@ -1,6 +1,8 @@
 [![Next.js](https://assets.zeit.co/image/upload/v1538361091/repositories/next-js/next-js.png)](https://nextjs.org)
 
-<h1 align="center">Next.js ❤️ MongoDB</h1>
+<h1 align="center">Next Store :convenience_store: </h1>
+
+<h2 align="center">Next.js :heart: MongoDB</h2>
   
 <!-- see an [LIVE EXAMPLE!]() -->
 
@@ -13,7 +15,7 @@ This project uses the following dependencies:
 - `next.js` - v9.3 or above required for **API Routes** and data fetching method.
 - `react` - v16.8 or above required for **react hooks**.
 - `react-dom` - v16.8 or above.
-- `swr` - required for state management
+- `swr` - for state management
 - `mongodb` and `mongoose` - for database.
 - `tailwindcss` - for styling.
 
