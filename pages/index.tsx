@@ -1,23 +1,16 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/client';
-import { useFetch } from '@/lib/fetcher';
 
 const Home: React.FC = () => {
 	const [session, loading] = useSession();
-	const { data } = useFetch(`/api/hello?id=1`);
-
+	console.log(session);
 	return (
 		<div className="container">
 			<Head>
 				<title>Home - Next Store</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-
-			<main>
-				<h1>Home</h1>
-				<Link href="/posts/first-post">Fisrt post</Link>
-			</main>
 
 			<div>
 				{!session && (
@@ -32,6 +25,7 @@ const Home: React.FC = () => {
 						<button onClick={() => signOut()}>Sign out</button>
 					</>
 				)}
+				{loading && <h3>LOADING...</h3>}
 			</div>
 
 			<h1 className="text-4xl md:text-5xl font-bold tracking-tighter leading-tight md:pr-8">
