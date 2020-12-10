@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
-import User from '@/Models/user';
+import User from '@/models/user';
 
 interface ResponseType {
 	message: string;

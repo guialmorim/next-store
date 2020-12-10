@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IAddress } from '@/Models/address';
+import { IAddress } from '@/models/address';
 
 export interface IUser extends Document {
 	name: String;

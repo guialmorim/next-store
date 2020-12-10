@@ -164,6 +164,11 @@
   resolved "https://registry.yarnpkg.com/@sqltools/formatter/-/formatter-1.2.2.tgz#9390a8127c0dcba61ebd7fdcc748655e191bdd68"
   integrity sha512-/5O7Fq6Vnv8L6ucmPjaWbVG1XkP4FO+w5glqfkIsq3Xw4oyNAdJddbnYodNDAfjVUvo/rrSCTom4kAND7T1o5Q==
 
+"@stripe/stripe-js@^1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-1.11.0.tgz#00e812d72a7760dae08237875066d263671478ee"
+  integrity sha512-SDNZKuETBEVkernd1tq8tL6wNfVKrl24Txs3p+4NYxoaIbNaEO7mrln/2Y/WRcQBWjagvhDIM5I6+X1rfK0qhQ==
+
 "@types/bson@*":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@types/bson/-/bson-4.0.3.tgz#30889d2ffde6262abbe38659364c631454999fbf"
@@ -176,7 +181,15 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.6.tgz#f4c7ec43e81b319a9815115031709f26987891f0"
   integrity sha512-3c+yGKvVP5Y9TYBEibGNR+kLtijnj7mYrXRg+WpFb2X9xm04g/DXYkfg4hmzJQosc9snFNUPkbYIhu+KAm6jJw==
 
-"@types/mongodb@*", "@types/mongodb@^3.5.27", "@types/mongodb@^3.6.0":
+"@types/mongodb@*":
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@types/mongodb/-/mongodb-3.6.1.tgz#4d30e4a1506446df0f9157eaf969ac694fa0771e"
+  integrity sha512-+osAbNePe5UIQQCuSVkvDQoec76eRD5ZIvu9CBSf+efms1g7cV5Ni+GIPUIdDm9p1pHW4OxyepwBuUXSkFJDtw==
+  dependencies:
+    "@types/bson" "*"
+    "@types/node" "*"
+
+"@types/mongodb@^3.5.27", "@types/mongodb@^3.6.0":
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/@types/mongodb/-/mongodb-3.6.0.tgz#7b8f7104a50b39d155f363d9572b0e51bcdaeae8"
   integrity sha512-5PGiTXS/tvvllyyD+LJt3bVyJixrY/ZIIJwsINnZorvJsN6gki4NH7Fhcep4MZF8HNCKNv2oWguysocS1jt9dw==
@@ -202,7 +215,7 @@
     jose "^1.28.0"
     typeorm "^0.2.24"
 
-"@types/node@*":
+"@types/node@*", "@types/node@>=8.1.0":
   version "14.14.10"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.10.tgz#5958a82e41863cfc71f2307b3748e3491ba03785"
   integrity sha512-J32dgx2hw8vXrSbu4ZlVhn1Nm3GbeCFNw2FWL8S5QKucHGY0cyNwjdQdO+KMBZ4wpmC7KhLCiNsdk1RFRIYUQQ==
@@ -211,6 +224,11 @@
   version "14.14.9"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.9.tgz#04afc9a25c6ff93da14deabd65dc44485b53c8d6"
   integrity sha512-JsoLXFppG62tWTklIoO4knA+oDTYsmqWxHRvd4lpmfQRNhX6osheUOWETP2jMoV/2bEHuMra8Pp3Dmo/stBFcw==
+
+"@types/nprogress@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@types/nprogress/-/nprogress-0.2.0.tgz#86c593682d4199212a0509cc3c4d562bbbd6e45f"
+  integrity sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==
 
 "@types/prop-types@*":
   version "15.7.3"
@@ -224,6 +242,13 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
+
+"@types/stripe@^8.0.417":
+  version "8.0.417"
+  resolved "https://registry.yarnpkg.com/@types/stripe/-/stripe-8.0.417.tgz#b651677a9fc33be8ce8fd5bceadd7ca077214244"
+  integrity sha512-PTuqskh9YKNENnOHGVJBm4sM0zE8B1jZw1JIskuGAPkMB+OH236QeN8scclhYGPA4nG6zTtPXgwpXdp+HPDTVw==
+  dependencies:
+    stripe "*"
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
@@ -3236,6 +3261,11 @@ npmlog@^4.0.1, npmlog@^4.1.2:
     gauge "~2.7.3"
     set-blocking "~2.0.0"
 
+nprogress@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/nprogress/-/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
+  integrity sha1-y480xTIT2JVyP8urkH6UIq28r7E=
+
 num2fraction@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/num2fraction/-/num2fraction-1.2.2.tgz#6f682b6a027a4e9ddfa4564cd2589d1d4e669ede"
@@ -4026,6 +4056,11 @@ purgecss@^3.0.0:
     postcss "7.0.32"
     postcss-selector-parser "^6.0.2"
 
+qs@^6.6.0:
+  version "6.9.4"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.4.tgz#9090b290d1f91728d3c22e54843ca44aea5ab687"
+  integrity sha512-A1kFqHekCTM7cz0udomYUoYNWjBebHm/5wzU/XqrBRBNWectVH0QIiN+NEcZ0Dte5hvzHwbr8+XQmguPhJ6WdQ==
+
 querystring-es3@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
@@ -4090,6 +4125,11 @@ react-refresh@0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
+
+react-storage-hooks@^4.0.0:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-storage-hooks/-/react-storage-hooks-4.0.1.tgz#e30ed5cda48c77c431ecc02ec3824bd615f5b7fb"
+  integrity sha512-fetDkT5RDHGruc2NrdD1iqqoLuXgbx6AUpQSQLLkrCiJf8i97EtwJNXNTy3+GRfsATLG8TZgNc9lGRZOaU5yQA==
 
 react@16.13.1:
   version "16.13.1"
@@ -4719,6 +4759,14 @@ strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
+stripe@*, stripe@^8.127.0:
+  version "8.127.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-8.127.0.tgz#1e458098118279f1745c53c8ebb28c447f8fb66e"
+  integrity sha512-gU/v1N1J+JpSgNMSpPw1T7k2uZO3+xOhBtQQE2fToKoIm0RCKtkLcgWwWhE8yuB1WBkMpL7s5bmioVFSS6fOYA==
+  dependencies:
+    "@types/node" ">=8.1.0"
+    qs "^6.6.0"
+
 style-loader@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-1.2.1.tgz#c5cbbfbf1170d076cfdd86e0109c5bba114baa1a"
@@ -5102,6 +5150,13 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-shopping-cart@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/use-shopping-cart/-/use-shopping-cart-2.2.0.tgz#aee9be0cc26a25f0668fd224328bd525386e315e"
+  integrity sha512-/3CeEVdGPZuVaKO3zMzwTykmaOpk0tVa8AqLS4O2RDLn7PTDkzThqil+hDJySI4lnUjjcwQso2O8dBOYIaSqMg==
+  dependencies:
+    react-storage-hooks "^4.0.0"
 
 use-subscription@1.5.1:
   version "1.5.1"
