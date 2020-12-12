@@ -1,38 +1,23 @@
 import Head from 'next/head';
-import Link from 'next/link';
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { NextPage } from 'next';
+import LandingLayout from '@/components/LandingLayout';
+import Products from '@/components/Products';
+import ProductsLayout from '@/components/ProductsLayout';
+import Land from '@/components/Land';
 
-const Home: React.FC = () => {
-	const [session, loading] = useSession();
-	console.log(session);
-	return (
-		<div className="container">
-			<Head>
-				<title>Home - Next Store</title>
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
-
-			<div>
-				{!session && (
-					<>
-						Not signed in <br />
-						<button onClick={() => signIn()}>Sign in</button>
-					</>
-				)}
-				{session && (
-					<>
-						Signed in as {session.user.email} <br />
-						<button onClick={() => signOut()}>Sign out</button>
-					</>
-				)}
-				{loading && <h3>LOADING...</h3>}
-			</div>
-
-			<h1 className="text-4xl md:text-5xl font-bold tracking-tighter leading-tight md:pr-8">
-				Next Store
-			</h1>
-		</div>
-	);
-};
+const Home: NextPage = () => (
+	<>
+		<Head>
+			<title>Next Store</title>
+			<link rel="icon" href="/favicon.ico" />
+		</Head>
+		<LandingLayout>
+			<Land />
+		</LandingLayout>
+		<ProductsLayout>
+			<Products />
+		</ProductsLayout>
+	</>
+);
 
 export default Home;
