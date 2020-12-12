@@ -1,36 +1,46 @@
-import { productData } from '@/data/prods';
+import React from 'react';
+import { products } from '@/data/prods';
 import { useShoppingCart, formatCurrencyString } from 'use-shopping-cart';
+import Card from '@/components/Card';
+import { Grid } from '@chakra-ui/react';
 
 const Products = () => {
 	const { addItem, removeItem } = useShoppingCart();
 
 	return (
-		<section className="products">
-			{productData.map((product) => (
-				<div key={product.sku} className="product">
-					<img src={product.image} alt={product.name} />
-					<h2>{product.name}</h2>
-					<p className="price">
-						{formatCurrencyString({
+		<Grid templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap="2rem">
+			{products.map((product) => {
+				const productCurrency = React.useMemo(
+					() =>
+						formatCurrencyString({
 							value: product.price,
 							currency: product.currency,
-						})}
-					</p>
-					<button
-						className="cart-style-background"
-						onClick={() => addItem(product)}
-					>
-						Add to cart
-					</button>
-					<button
-						className="cart-style-background"
-						onClick={() => removeItem(product.sku)}
-					>
-						Remove
-					</button>
-				</div>
-			))}
-		</section>
+						}),
+					[product.price, product.currency]
+				);
+
+				const AddItemToCart = React.useCallback(() => addItem(product), [
+					product,
+				]);
+				const RemoveItemFromCart = React.useCallback(
+					() => removeItem(product.sku),
+					[product]
+				);
+
+				return (
+					<Card
+						key={product.sku}
+						title={product.name}
+						description={productCurrency}
+						addItemToCart={AddItemToCart}
+						removeItemToCart={RemoveItemFromCart}
+						imageUrl={product.image}
+						reviewCount={product.reviewCount}
+						rating={product.rating}
+					/>
+				);
+			})}
+		</Grid>
 	);
 };
 

@@ -1,39 +1,44 @@
 import type { AppProps } from 'next/app';
 import { Provider } from 'next-auth/client';
 import Router from 'next/router';
-import Link from 'next/link';
-import Head from 'next/head';
 import NProgress from 'nprogress';
+import Header from '@/components/Header';
+import { ChakraProvider, theme, CSSReset } from '@chakra-ui/react';
 
 import '@/styles/nprogress.css';
 import '@/styles/global.css';
 
-Router.events.on('routeChangeStart', (url) => {
-	console.log(`Loading: ${url}`);
-	NProgress.start();
-});
+const customTheme = {
+	...theme,
+	colors: {
+		...theme.colors,
+		purple: {
+			50: '#f5e9ff',
+			100: '#dac1f3',
+			200: '#c098e7',
+			300: '#a571dc',
+			400: '#8c48d0',
+			500: '#722fb7',
+			600: '#59238f',
+			700: '#3f1968',
+			800: '#260f40',
+			900: '#10031a',
+		},
+	},
+};
+
+Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-export default function App({ Component, pageProps }: AppProps) {
-	return (
-		<>
-			<nav>
-				<style jsx>{`
-					a {
-						margin: 0 10px 0 0;
-					}
-				`}</style>
-				<Link href="/posts/first-post">
-					<a>first posts</a>
-				</Link>
-				<Link href="/forever">
-					<a>Forever</a>
-				</Link>
-			</nav>
-			<Provider session={pageProps.session}>
-				<Component {...pageProps} />
-			</Provider>
-		</>
-	);
-}
+const App = ({ Component, pageProps }: AppProps) => (
+	<ChakraProvider theme={customTheme}>
+		<Provider session={pageProps.session}>
+			<Header />
+			<CSSReset />
+			<Component {...pageProps} />
+		</Provider>
+	</ChakraProvider>
+);
+
+export default App;
