@@ -1,8 +1,7 @@
 import React from 'react';
 import { NextPage } from 'next';
+import CartSummary from '@/components/CartSummary';
 
-const Cart: NextPage = () => {
-	return <h1>Cart Page</h1>;
-};
+const Cart: NextPage = () => <CartSummary />;
 
 export default Cart;

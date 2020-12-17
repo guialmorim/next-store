@@ -1,6 +1,5 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import Link from 'next/link';
-//import Image from 'next/image';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import {
 	Box,
@@ -16,23 +15,33 @@ import {
 	Image,
 	MenuGroup,
 	MenuDivider,
+	HStack,
+	Icon,
 } from '@chakra-ui/react';
-import { CloseIcon, HamburgerIcon, SettingsIcon } from '@chakra-ui/icons';
+import {
+	CloseIcon,
+	HamburgerIcon,
+	SettingsIcon,
+	MoonIcon,
+	SunIcon,
+} from '@chakra-ui/icons';
+import {
+	AiOutlineHome,
+	AiOutlineShoppingCart,
+	AiOutlineUser,
+	AiOutlineUserAdd,
+	AiTwotoneShopping,
+} from 'react-icons/ai';
+import { GoSignOut } from 'react-icons/go';
+import { CartNotification, CartButton } from '@/styled/Cart';
+import { useShoppingCart } from 'use-shopping-cart';
 
-// import {  AiOutlineShoppingCart } from '';
+import DrawerCart from '@/components/DrawerCart';
 
-type TProps = {
-	children?: ReactNode;
-	to?: string;
-	isLast?: boolean;
-	isLink?: boolean;
-};
-
-const MenuItems: React.FC<TProps> = (props) => {
+const MenuItems = (props: any) => {
 	const { children, isLast, to = '/', isLink = true, ...rest } = props;
 	return isLink ? (
 		<Text
-			color="black"
 			mb={{ base: isLast ? 0 : 8, sm: 0 }}
 			mr={{ base: 0, sm: isLast ? 0 : 8 }}
 			display="block"
@@ -43,19 +52,24 @@ const MenuItems: React.FC<TProps> = (props) => {
 			</Link>
 		</Text>
 	) : (
-		<Box
+		<Text
 			mb={{ base: isLast ? 0 : 8, sm: 0 }}
 			mr={{ base: 0, sm: isLast ? 0 : 8 }}
 			display="block"
-			color="black"
+			{...rest}
 		>
 			{children}
-		</Box>
+		</Text>
 	);
 };
 
 const Header: React.FC = () => {
+	const [isDrawerCartOpen, setIsDrawerCartOpen] = React.useState<boolean>(
+		false
+	);
 	const [session, loading] = useSession();
+
+	const { cartCount } = useShoppingCart();
 
 	const { colorMode, toggleColorMode } = useColorMode();
 
@@ -67,10 +81,6 @@ const Header: React.FC = () => {
 
 	const backGroundColorForItems = useColorModeValue('purple.300', 'purple.700');
 	const colorForItems = useColorModeValue('purple.700', 'purple.300');
-
-	{
-		loading && <h3>LOADING...</h3>;
-	}
 
 	const [show, setShow] = React.useState(false);
 	const toggleMenu = () => setShow(!show);
@@ -84,12 +94,20 @@ const Header: React.FC = () => {
 			w="100%"
 			mb={8}
 			p={8}
-			bg={['purple.500', 'purple.500', 'transparent', 'transparent']}
-			color="white"
+			bg={backGroundColorForNavBar}
+			color={colorForNavBar}
 		>
-			<Flex color={colorForItems} align="center">
-				BRAND ICON HERE
-			</Flex>
+			<HStack cursor="pointer">
+				<Box color={colorForItems} display="inline" fontSize="1.5rem">
+					<Link href="/">
+						<Text color={colorForItems}>
+							Next
+							<Icon as={AiTwotoneShopping} mx={2} mb={1} />
+							Store
+						</Text>
+					</Link>
+				</Box>
+			</HStack>
 
 			<Box display={{ base: 'block', md: 'none' }} onClick={toggleMenu}>
 				{show ? <CloseIcon /> : <HamburgerIcon />}
@@ -105,21 +123,32 @@ const Header: React.FC = () => {
 					direction={['column', 'row', 'row', 'row']}
 					pt={[4, 4, 0, 0]}
 				>
-					<MenuItems to="/">Home</MenuItems>
-					<MenuItems to="/profile">Profile</MenuItems>
-					<MenuItems to="/cart">Cart</MenuItems>
+					<MenuItems color={colorForItems} to="/">
+						<Icon cursor="pointer" fontSize="1.5rem" as={AiOutlineHome} />
+					</MenuItems>
+
+					<MenuItems isLink={false} color={colorForItems}>
+						<CartButton onClick={() => setIsDrawerCartOpen(!isDrawerCartOpen)}>
+							<Icon
+								as={AiOutlineShoppingCart}
+								cursor="pointer"
+								fontSize="1.5rem"
+								color={colorForItems}
+							/>
+
+							{cartCount > 0 && (
+								<CartNotification>{cartCount}</CartNotification>
+							)}
+						</CartButton>
+					</MenuItems>
 					<MenuItems isLink={false}>
-						<Button
-							onClick={toggleColorMode}
-							rounded="lg"
-							bg={backGroundColorForItems}
+						<Icon
+							cursor="pointer"
+							fontSize="1.5rem"
 							color={colorForItems}
-							_hover={{
-								bg: ['purple.100', 'purple.100', 'purple.600', 'purple.600'],
-							}}
-						>
-							Toggle Mode {colorMode}
-						</Button>
+							onClick={toggleColorMode}
+							as={colorMode === 'light' ? MoonIcon : SunIcon}
+						/>
 					</MenuItems>
 
 					<MenuItems isLink={false}>
@@ -127,6 +156,8 @@ const Header: React.FC = () => {
 							<>
 								<Menu isLazy>
 									<MenuButton
+										bg={backGroundColorForItems}
+										color={colorForItems}
 										rounded="lg"
 										py="15px"
 										as={Button}
@@ -141,18 +172,33 @@ const Header: React.FC = () => {
 									>
 										Welcome, {session.user.name}!
 									</MenuButton>
-									<MenuList>
+									<MenuList color={colorForItems}>
 										<MenuGroup title="Settings">
-											<MenuItem>Preferences</MenuItem>
+											<Link href="/settings">
+												<MenuItem>
+													<span>
+														<Text mr={2}>Preferences</Text>
+														<SettingsIcon />
+													</span>
+												</MenuItem>
+											</Link>
 										</MenuGroup>
 										<MenuDivider />
 										<MenuGroup title="Account">
-											<MenuItem>
-												<Link href="/profile">
-													<a>Profile</a>
-												</Link>
+											<Link href="/profile">
+												<MenuItem>
+													<>
+														<Text mr={2}>Profile</Text>
+														<AiOutlineUser />
+													</>
+												</MenuItem>
+											</Link>
+											<MenuItem onClick={() => signOut()}>
+												<>
+													<Text mr={2}>Sign Out</Text>
+													<GoSignOut />
+												</>
 											</MenuItem>
-											<MenuItem onClick={() => signOut()}>Sign Out</MenuItem>
 										</MenuGroup>
 									</MenuList>
 								</Menu>
@@ -167,12 +213,17 @@ const Header: React.FC = () => {
 								}}
 								onClick={() => signIn()}
 							>
-								Create Account
+								<Text m={1}>Create Account</Text>
+								<AiOutlineUserAdd />
 							</Button>
 						)}
 					</MenuItems>
 				</Flex>
 			</Box>
+			<DrawerCart
+				isOpen={isDrawerCartOpen}
+				onClose={() => setIsDrawerCartOpen(false)}
+			/>
 		</Flex>
 	);
 };

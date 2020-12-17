@@ -3,6 +3,7 @@ import { Provider } from 'next-auth/client';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import Header from '@/components/Header';
+import CartProvider from '@/components/CartProvider';
 import { ChakraProvider, theme, CSSReset } from '@chakra-ui/react';
 
 import '@/styles/nprogress.css';
@@ -34,9 +35,11 @@ Router.events.on('routeChangeError', () => NProgress.done());
 const App = ({ Component, pageProps }: AppProps) => (
 	<ChakraProvider theme={customTheme}>
 		<Provider session={pageProps.session}>
-			<Header />
 			<CSSReset />
-			<Component {...pageProps} />
+			<CartProvider>
+				<Header />
+				<Component {...pageProps} />
+			</CartProvider>
 		</Provider>
 	</ChakraProvider>
 );

@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Box, Image, Badge } from '@chakra-ui/react';
-import { StarIcon } from '@chakra-ui/icons';
+import { Box, Image, Badge, Button, useColorModeValue } from '@chakra-ui/react';
 
 interface IProps {
 	title: string;
@@ -9,12 +8,15 @@ interface IProps {
 	badge?: boolean;
 	children?: ReactNode;
 	addItemToCart: () => void;
-	removeItemToCart: () => void;
+	removeItemFromCart: () => void;
 	reviewCount: number;
 	rating: number;
 }
 
 const Card: React.FC<IProps> = (props: IProps) => {
+	const backGroundColorForItems = useColorModeValue('purple.300', 'purple.700');
+	const colorForItems = useColorModeValue('purple.700', 'purple.300');
+
 	return (
 		<Box
 			m="0 auto"
@@ -24,7 +26,6 @@ const Card: React.FC<IProps> = (props: IProps) => {
 			borderWidth="1px"
 			borderRadius="lg"
 			overflow="hidden"
-			bg="white"
 		>
 			<Image src={props.imageUrl} alt={props.imageUrl} />
 			{props.badge && (
@@ -58,7 +59,9 @@ const Card: React.FC<IProps> = (props: IProps) => {
 
 				<Box>{props.description}</Box>
 
-				<Box d="flex" mt="2" alignItems="center">
+				{/* STAR RATING */}
+
+				{/* <Box d="flex" mt="2" alignItems="center">
 					{Array(5)
 						.fill('')
 						.map((_, i) => (
@@ -70,6 +73,16 @@ const Card: React.FC<IProps> = (props: IProps) => {
 					<Box as="span" ml="2" color="gray.600" fontSize="sm">
 						{props.reviewCount} reviews
 					</Box>
+				</Box> */}
+
+				<Box mt="1" textAlign="left">
+					<Button
+						bg={backGroundColorForItems}
+						color={colorForItems}
+						onClick={props.addItemToCart}
+					>
+						Add to Cart
+					</Button>
 				</Box>
 			</Box>
 		</Box>

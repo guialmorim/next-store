@@ -1,18 +1,17 @@
 import { NextPage } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-
-import PrintObject from '@/components/PrintObject';
-import Cart from '@/components/Cart';
-import ClearCart from '@/components/ClearCart';
-
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { fetchGetJSON } from '../utils/api-helpers';
 import useSWR from 'swr';
+import { Box, Heading, Button, Text } from '@chakra-ui/react';
+import CheckoutLayout from '@/components/CheckoutLayout';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
 
 const ResultPage: NextPage = () => {
 	const router = useRouter();
 
 	// Fetch CheckoutSession from static page via
-	// https://nextjs.org/docs/basic-features/data-fetching#static-generation
 	const { data, error } = useSWR(
 		router.query.session_id
 			? `/api/checkout_sessions/${router.query.session_id}`
@@ -23,15 +22,39 @@ const ResultPage: NextPage = () => {
 	if (error) return <div>failed to load</div>;
 
 	return (
-		<div className="page-container">
-			<h1>Checkout Payment Result</h1>
-			<h2>Status: {data?.payment_intent?.status ?? 'loading...'}</h2>
-			<h3>CheckoutSession response:</h3>
-			<PrintObject content={data ?? 'loading...'} />
-			<Cart>
-				<ClearCart />
-			</Cart>
-		</div>
+		<CheckoutLayout>
+			<Box maxW="32rem">
+				<Heading as="h1" mb={8}>
+					Checkout Payment Result
+				</Heading>
+
+				{data?.payment_intent?.status === 'succeeded' && (
+					<Box>
+						<Heading as="h2" size="md">
+							Whoa! Congrats!
+						</Heading>
+						<Heading as="h4" size="sm">
+							Your payment has been confirmed.
+						</Heading>
+					</Box>
+				)}
+
+				<Text fontSize="md" mt={5}>
+					Status: {data?.payment_intent?.status ?? <LoadingSpinner />}
+				</Text>
+
+				<Link href="/">
+					<Button
+						size="lg"
+						colorScheme="purple"
+						mt="24px"
+						rightIcon={<ChevronLeftIcon />}
+					>
+						Back to Home
+					</Button>
+				</Link>
+			</Box>
+		</CheckoutLayout>
 	);
 };
 
