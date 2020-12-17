@@ -17,7 +17,7 @@ const ProductsLayout: React.FC<TProps> = ({ children }) => {
 			p="5"
 			bg="transparent"
 			maxW="80rem"
-			mt="5rem"
+			my="5rem"
 		>
 			{children}
 		</Box>

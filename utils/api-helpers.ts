@@ -1,16 +1,21 @@
-export async function fetchGetJSON(url: string) {
+export async function fetchGetJSON(endpoint: string) {
 	try {
-		const data = await fetch(url).then((res) => res.json());
+		const absoluteURL = process.env.BASE_URL + endpoint;
+		const data = await fetch(absoluteURL).then((res) => res.json());
 		return data;
 	} catch (err) {
-		throw new Error(err.message);
+		throw new Error(err);
 	}
 }
 
-export async function fetchPostJSON(url: string, method: string, data?: {}) {
+export async function fetchPostJSON(
+	endpoint: string,
+	method: string,
+	data?: {}
+) {
 	try {
 		// Default options are marked with *
-		const response = await fetch(url, {
+		const response = await fetch(process.env.BASE_URL + endpoint, {
 			method: method, // *GET, POST, PUT, DELETE, etc.
 			mode: 'cors', // no-cors, *cors, same-origin
 			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

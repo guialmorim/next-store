@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { fetchPostJSON } from '@/utils/api-helpers';
 import { useShoppingCart } from 'use-shopping-cart';
+import { Container, Button } from '@chakra-ui/react';
+import { Toast } from '@/utils/toast';
 
 const CartSummary = () => {
 	const [loading, setLoading] = useState(false);
@@ -37,35 +39,36 @@ const CartSummary = () => {
 		redirectToCheckout({ sessionId: response.id });
 	};
 
-	return (
-		<form onSubmit={handleCheckout}>
-			<h2>Cart summary</h2>
-			{/* This is where we'll render our cart */}
-			<p suppressHydrationWarning>
-				<strong>Number of Items:</strong> {cartCount}
-			</p>
-			<p suppressHydrationWarning>
-				<strong>Total:</strong> {formattedTotalPrice}
-			</p>
+	const onClearCart = () => {
+		clearCart();
+		Toast({
+			title: 'Aww yeah!',
+			description: 'Cart Cleared',
+			status: 'success',
+		});
+	};
 
-			{/* Redirects the user to Stripe */}
-			{/* <StripeTestCards /> */}
-			{loading && <h2>LOADING...</h2>}
-			<button
-				className="cart-style-background"
-				type="submit"
-				disabled={cartEmpty || loading}
-			>
-				Checkout
-			</button>
-			<button
-				className="cart-style-background"
-				type="button"
-				onClick={clearCart}
-			>
-				Clear Cart
-			</button>
-		</form>
+	return (
+		<Container>
+			<form onSubmit={handleCheckout}>
+				<h2>Cart summary</h2>
+				{/* This is where we'll render our cart */}
+				<p suppressHydrationWarning>
+					<strong>Number of Items:</strong> {cartCount}
+				</p>
+				<p suppressHydrationWarning>
+					<strong>Total:</strong> {formattedTotalPrice}
+				</p>
+
+				{loading && <h2>LOADING...</h2>}
+				<Button type="submit" disabled={cartEmpty || loading}>
+					Checkout
+				</Button>
+				<Button type="button" onClick={onClearCart}>
+					Clear Cart
+				</Button>
+			</form>
+		</Container>
 	);
 };
 

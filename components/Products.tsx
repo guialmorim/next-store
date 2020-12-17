@@ -3,13 +3,30 @@ import { products } from '@/data/prods';
 import { useShoppingCart, formatCurrencyString } from 'use-shopping-cart';
 import Card from '@/components/Card';
 import { Grid } from '@chakra-ui/react';
+import { Toast } from '@/utils/toast';
 
-const Products = () => {
+type TProduct = {
+	name: string;
+	sku: string;
+	price: number;
+	image: string;
+	currency: string;
+	reviewCount: number;
+	rating: number;
+};
+
+interface IProductProps {
+	preview?: boolean;
+}
+
+const Products: React.FC<IProductProps> = ({ preview }) => {
 	const { addItem, removeItem } = useShoppingCart();
+
+	const filteredProducts = preview ? products.slice(0, 4) : products;
 
 	return (
 		<Grid templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap="2rem">
-			{products.map((product) => {
+			{filteredProducts.map((product: TProduct) => {
 				const productCurrency = React.useMemo(
 					() =>
 						formatCurrencyString({
@@ -19,11 +36,26 @@ const Products = () => {
 					[product.price, product.currency]
 				);
 
-				const AddItemToCart = React.useCallback(() => addItem(product), [
-					product,
-				]);
+				const AddItemToCart = React.useCallback(
+					(product: TProduct) => {
+						addItem(product);
+						Toast({
+							title: 'Thank you!',
+							description: `${product.name} added in your cart`,
+							status: 'success',
+						});
+					},
+					[product]
+				);
 				const RemoveItemFromCart = React.useCallback(
-					() => removeItem(product.sku),
+					(sku: string) => {
+						removeItem(sku);
+						Toast({
+							title: 'Removed',
+							description: 'product removed from your cart',
+							status: 'success',
+						});
+					},
 					[product]
 				);
 
@@ -32,8 +64,8 @@ const Products = () => {
 						key={product.sku}
 						title={product.name}
 						description={productCurrency}
-						addItemToCart={AddItemToCart}
-						removeItemToCart={RemoveItemFromCart}
+						addItemToCart={() => AddItemToCart(product)}
+						removeItemFromCart={() => RemoveItemFromCart(product.sku)}
 						imageUrl={product.image}
 						reviewCount={product.reviewCount}
 						rating={product.rating}
