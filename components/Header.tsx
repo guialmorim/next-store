@@ -148,6 +148,8 @@ const Header: React.FC = () => {
 							color={colorForItems}
 							onClick={toggleColorMode}
 							as={colorMode === 'light' ? MoonIcon : SunIcon}
+							mr={[0, 5]}
+							mb={[5, 0]}
 						/>
 					</MenuItems>
 
@@ -156,8 +158,7 @@ const Header: React.FC = () => {
 							<>
 								<Menu isLazy>
 									<MenuButton
-										bg={backGroundColorForItems}
-										color={colorForItems}
+										colorScheme="purple"
 										rounded="lg"
 										py="15px"
 										as={Button}
@@ -172,14 +173,14 @@ const Header: React.FC = () => {
 									>
 										Welcome, {session.user.name}!
 									</MenuButton>
-									<MenuList color={colorForItems}>
+									<MenuList colorScheme="purple">
 										<MenuGroup title="Settings">
 											<Link href="/settings">
 												<MenuItem>
-													<span>
+													<>
 														<Text mr={2}>Preferences</Text>
 														<SettingsIcon />
-													</span>
+													</>
 												</MenuItem>
 											</Link>
 										</MenuGroup>
@@ -206,11 +207,7 @@ const Header: React.FC = () => {
 						) : (
 							<Button
 								rounded="lg"
-								bg={backGroundColorForItems}
-								color={colorForItems}
-								_hover={{
-									bg: ['purple.100', 'purple.100', 'purple.600', 'purple.600'],
-								}}
+								colorScheme="purple"
 								onClick={() => signIn()}
 							>
 								<Text m={1}>Create Account</Text>

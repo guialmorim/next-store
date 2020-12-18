@@ -149,7 +149,11 @@ const DrawerCart: React.FC<IDrawerCartProps> = ({ isOpen, onClose }) => {
 
 						<Box mb="3rem">
 							<Link href="/cart">
-								<Button bg={backGroundColorForItems} color={colorForItems}>
+								<Button
+									bg={backGroundColorForItems}
+									color={colorForItems}
+									onClick={onClose}
+								>
 									See your cart with details
 								</Button>
 							</Link>

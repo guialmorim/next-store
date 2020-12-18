@@ -1,9 +1,9 @@
 import React from 'react';
 import { Heading, Stack, Box } from '@chakra-ui/react';
 
-const AdressesLayout: React.FC = ({ children }) => (
+const ProfileInfoLayout: React.FC = ({ children }) => (
 	<Box>
-		<Stack spacing={4} align={['center', 'center', 'flex-start', 'flex-start']}>
+		<Stack spacing={4}>
 			<Heading
 				as="h2"
 				size="lg"
@@ -11,11 +11,11 @@ const AdressesLayout: React.FC = ({ children }) => (
 				color="primary.800"
 				textAlign={['center', 'center', 'left', 'left']}
 			>
-				Your Addresses
+				Your Information
 			</Heading>
 			{children}
 		</Stack>
 	</Box>
 );
 
-export default AdressesLayout;
+export default ProfileInfoLayout;
