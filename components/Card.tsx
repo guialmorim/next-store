@@ -1,16 +1,22 @@
 import React, { ReactNode } from 'react';
-import { Box, Image, Badge, Button, useColorModeValue } from '@chakra-ui/react';
+import {
+	Box,
+	Image,
+	Badge,
+	Button,
+	useColorModeValue,
+	Spacer,
+} from '@chakra-ui/react';
 
 interface IProps {
 	title: string;
 	description: string;
+	currency: string;
 	imageUrl: string;
 	badge?: boolean;
 	children?: ReactNode;
 	addItemToCart: () => void;
 	removeItemFromCart: () => void;
-	reviewCount: number;
-	rating: number;
 }
 
 const Card: React.FC<IProps> = (props: IProps) => {
@@ -23,11 +29,12 @@ const Card: React.FC<IProps> = (props: IProps) => {
 			rounded="1rem"
 			shadow="2xl"
 			maxW="sm"
+			maxH="xl"
 			borderWidth="1px"
 			borderRadius="lg"
 			overflow="hidden"
 		>
-			<Image src={props.imageUrl} alt={props.imageUrl} />
+			<Image src={props.imageUrl} alt={props.imageUrl} w="20rem" h="17rem" />
 			{props.badge && (
 				<Badge borderRadius="full" px="2" colorScheme="teal">
 					New
@@ -39,49 +46,31 @@ const Card: React.FC<IProps> = (props: IProps) => {
 						color="gray.500"
 						fontWeight="semibold"
 						letterSpacing="wide"
-						fontSize="xs"
+						fontSize="sm"
 						textTransform="uppercase"
 						ml="2"
 					>
-						lorem ipsum dolor sit
+						{props.currency}
 					</Box>
 				</Box>
 
 				<Box
 					mt="1"
 					fontWeight="semibold"
-					as="h4"
+					as="h3"
 					lineHeight="tight"
-					isTruncated
+					fontSize="md"
 				>
 					{props.title}
 				</Box>
 
-				<Box>{props.description}</Box>
+				<Box lineHeight="tight" fontSize="xs" mt="0.5rem">
+					{props.description}
+				</Box>
 
-				{/* STAR RATING */}
-
-				{/* <Box d="flex" mt="2" alignItems="center">
-					{Array(5)
-						.fill('')
-						.map((_, i) => (
-							<StarIcon
-								key={i}
-								color={i < props.rating ? 'teal.500' : 'gray.300'}
-							/>
-						))}
-					<Box as="span" ml="2" color="gray.600" fontSize="sm">
-						{props.reviewCount} reviews
-					</Box>
-				</Box> */}
-
-				<Box mt="1" textAlign="left">
-					<Button
-						bg={backGroundColorForItems}
-						color={colorForItems}
-						onClick={props.addItemToCart}
-					>
-						Add to Cart
+				<Box mt="1rem" textAlign="left">
+					<Button colorScheme="purple" onClick={props.addItemToCart}>
+						Add to cart
 					</Button>
 				</Box>
 			</Box>

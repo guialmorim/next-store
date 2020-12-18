@@ -1,20 +1,13 @@
 import React, { ReactNode } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { SimpleGrid, Flex } from '@chakra-ui/react';
 
 type TProps = { children: ReactNode };
 
 const ProfileLayout: React.FC<TProps> = ({ children }) => (
-	<Box mx="10rem">
-		<Flex
-			align="center"
-			justify={{ base: 'center', md: 'space-around', xl: 'space-between' }}
-			direction={{ base: 'column-reverse', md: 'row' }}
-			minH="70vh"
-			px={8}
-			mb={16}
-		>
+	<Flex direction="column" align="center" maxW={{ xl: '1200px' }} m="0 auto">
+		<SimpleGrid columns={{ sm: 1, md: 2 }} spacingX="7rem" spacingY="4rem">
 			{children}
-		</Flex>
-	</Box>
+		</SimpleGrid>
+	</Flex>
 );
 export default ProfileLayout;

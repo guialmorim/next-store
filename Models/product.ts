@@ -8,14 +8,26 @@ export interface IProduct extends Document {
 
 const ProductSchema: Schema = new Schema(
 	{
+		sku: {
+			type: String,
+			required: true,
+			trim: true,
+		},
 		name: {
 			type: String,
 			required: true,
 			trim: true,
 			maxlength: [40, 'Nome não pode ter mais do que 40 carateres'],
 		},
+		description: {
+			type: String,
+			required: true,
+		},
 		price: { type: Number, required: true },
-		quantity: { type: Number, required: true },
+		image: {
+			type: String,
+			required: true,
+		},
 	},
 	{
 		timestamps: true,

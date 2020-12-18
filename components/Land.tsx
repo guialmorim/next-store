@@ -64,7 +64,7 @@ const Land: React.FC<TProps> = ({
 				</Heading>
 				<Link href={ctaLink!}>
 					<Button
-						color="primary"
+						colorScheme="purple"
 						borderRadius="8px"
 						py="4"
 						px="4"
@@ -93,12 +93,12 @@ const Land: React.FC<TProps> = ({
 };
 
 Land.defaultProps = {
-	title: 'React landing page with Chakra UI',
+	title: 'Amazing E-Commerce application made with Next Js and Chakra UI',
 	subtitle:
 		'This is the subheader section where you describe the basic benefits of your product',
-	image: 'https://source.unsplash.com/collection/404339/800x600',
+	image: '/landimage.webp',
 	ctaText: 'See all of our products!',
-	ctaLink: '/signup',
+	ctaLink: '/products',
 };
 
 export default Land;

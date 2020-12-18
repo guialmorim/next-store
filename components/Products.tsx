@@ -1,39 +1,39 @@
 import React from 'react';
-import { products } from '@/data/prods';
 import { useShoppingCart, formatCurrencyString } from 'use-shopping-cart';
 import Card from '@/components/Card';
 import { Grid } from '@chakra-ui/react';
 import { Toast } from '@/utils/toast';
+import { CURRENCY } from '@/config/stripe';
 
 type TProduct = {
-	name: string;
 	sku: string;
+	name: string;
+	description: string;
 	price: number;
 	image: string;
 	currency: string;
-	reviewCount: number;
-	rating: number;
 };
 
 interface IProductProps {
+	products: Array<TProduct> | undefined;
 	preview?: boolean;
 }
 
-const Products: React.FC<IProductProps> = ({ preview }) => {
+const Products: React.FC<IProductProps> = ({ products, preview = false }) => {
 	const { addItem, removeItem } = useShoppingCart();
 
-	const filteredProducts = preview ? products.slice(0, 4) : products;
+	const filteredProducts = preview ? products?.slice(0, 4) : products;
 
 	return (
 		<Grid templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap="2rem">
-			{filteredProducts.map((product: TProduct) => {
+			{filteredProducts?.map((product: TProduct) => {
 				const productCurrency = React.useMemo(
 					() =>
 						formatCurrencyString({
 							value: product.price,
-							currency: product.currency,
+							currency: CURRENCY,
 						}),
-					[product.price, product.currency]
+					[product.price, CURRENCY]
 				);
 
 				const AddItemToCart = React.useCallback(
@@ -63,12 +63,11 @@ const Products: React.FC<IProductProps> = ({ preview }) => {
 					<Card
 						key={product.sku}
 						title={product.name}
-						description={productCurrency}
+						description={product.description}
+						currency={productCurrency}
 						addItemToCart={() => AddItemToCart(product)}
 						removeItemFromCart={() => RemoveItemFromCart(product.sku)}
 						imageUrl={product.image}
-						reviewCount={product.reviewCount}
-						rating={product.rating}
 					/>
 				);
 			})}
