@@ -9,7 +9,7 @@ const connection: DbConnection = {
 };
 
 let uri = process.env.MONGODB_URI || '';
-let dbName = process.env.MONGODB_DB;
+let dbName = process.env.MONGODB_DBNAME;
 
 if (!uri) {
 	throw new Error(

@@ -1,8 +1,8 @@
-import NextAuth from 'next-auth';
+import NextAuth, { InitOptions } from 'next-auth';
 import Providers from 'next-auth/providers';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const options = {
+const options: InitOptions = {
 	// Configure one or more authentication providers
 	providers: [
 		Providers.Auth0({
@@ -14,7 +14,17 @@ const options = {
 	],
 
 	// A database is optional, but required to persist accounts in a database
-	// database: process.env.DATABASE_URL,
+	database: {
+		type: 'mongodb',
+		url: `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTERNAME}/${process.env.MONGODB_DBNAME}`,
+		w: 'majority',
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	},
+
+	//  is optional, but strongly recommended!
+	// A random string used to hash tokens, sign cookies and generate crytographic keys.
+	secret: process.env.NEXTAUTH_SECRETKEY,
 };
 
 export default (req: NextApiRequest, res: NextApiResponse): Promise<void> =>
