@@ -8,6 +8,7 @@ import { ChakraProvider, theme, CSSReset } from '@chakra-ui/react';
 
 import '@/styles/nprogress.css';
 import '@/styles/global.css';
+import 'reflect-metadata';
 
 const customTheme = {
 	...theme,

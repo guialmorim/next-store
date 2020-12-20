@@ -24,11 +24,22 @@
 		"react": "16.13.1",
 		"react-dom": "16.13.1",
 		"react-icons": "^4.1.0",
+		"reflect-metadata": "^0.1.13",
 		"stripe": "^8.127.0",
 		"styled-components": "^5.2.1",
 		"swr": "^0.3.9",
+		"typeorm": "^0.2.29",
 		"use-shopping-cart": "^2.2.0",
 		"yup": "^0.32.8"
+	},
+	"resolutions": {
+		"typeorm": "0.2.28"
+	},
+	"peerOptionalDependencies": {
+		"mongodb": "^3.6.3"
+	},
+	"optionalDependencies": {
+		"mongodb": "^3.6.3"
 	},
 	"devDependencies": {
 		"@types/mongodb": "^3.6.0",
