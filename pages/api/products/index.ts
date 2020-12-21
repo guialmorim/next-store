@@ -2,15 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
 import Product from '@/models/product';
 
-interface ResponseType {
-	message: string;
-}
-
 connect();
 
 export default async (
 	request: NextApiRequest,
-	response: NextApiResponse //<ResponseType>
+	response: NextApiResponse
 ): Promise<void> => {
 	const { method, body } = request;
 

@@ -23,8 +23,6 @@ const CartSummary = () => {
 		event.preventDefault();
 		setLoading(true);
 
-		console.log('cartDetails', cartDetails);
-
 		const response = await fetchPostJSON(
 			'/api/checkout_sessions/cart',
 			'POST',
@@ -32,7 +30,11 @@ const CartSummary = () => {
 		);
 
 		if (response.statusCode === 500) {
-			console.error(response.message);
+			Toast({
+				title: 'Someting went wrong',
+				description: response.message,
+				status: 'error',
+			});
 			return;
 		}
 

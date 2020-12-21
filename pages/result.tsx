@@ -14,9 +14,11 @@ import {
 	AlertTitle,
 	AlertIcon,
 	Container,
+	Skeleton,
 } from '@chakra-ui/react';
 import CheckoutLayout from '@/components/CheckoutLayout';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
+import ClearCart from '@/components/ClearCart';
 
 const ResultPage: NextPage = () => {
 	const router = useRouter();
@@ -29,7 +31,7 @@ const ResultPage: NextPage = () => {
 		fetchGetJSON
 	);
 
-	if (error) {
+	if (error || data?.statusCode === 500) {
 		return (
 			<Container>
 				<Alert
@@ -62,43 +64,68 @@ const ResultPage: NextPage = () => {
 	}
 
 	return (
-		<CheckoutLayout>
-			<Alert
-				status="success"
-				variant="subtle"
-				flexDirection="column"
-				alignItems="center"
-				justifyContent="center"
-				textAlign="center"
-				height="auto"
-			>
-				<AlertIcon boxSize="40px" mr={0} />
-				<AlertTitle mt={4} mb={1} fontSize="lg">
-					Checkout Payment Result
-				</AlertTitle>
-				<AlertDescription maxWidth="sm">
-					{data?.payment_intent?.status === 'succeeded' && (
-						<Box>
-							<Heading as="h2" size="md">
+		<>
+			{data?.payment_intent?.status ? (
+				<CheckoutLayout>
+					<Alert
+						status="success"
+						variant="subtle"
+						flexDirection="column"
+						alignItems="center"
+						justifyContent="center"
+						textAlign="center"
+						height="auto"
+					>
+						<AlertIcon boxSize="40px" mr={0} />
+						<AlertTitle mt={4} mb={1}>
+							<Heading as="h1" size="lg">
 								Whoa! Congrats!
 							</Heading>
-							<Heading as="h4" size="sm">
-								Your payment has been confirmed.
-							</Heading>
-						</Box>
-					)}
+						</AlertTitle>
+						<AlertDescription maxWidth="sm">
+							{data?.payment_intent?.status === 'succeeded' && (
+								<Box>
+									<Heading as="h4" size="sm">
+										Your payment has been confirmed.
+									</Heading>
+								</Box>
+							)}
 
-					<Text fontSize="md" mt={5}>
-						Status: {data?.payment_intent?.status ?? <LoadingSpinner />}
-					</Text>
-					<Link href="/">
-						<Button size="md" mt="24px" rightIcon={<ArrowLeftIcon />}>
-							Back to Home
-						</Button>
-					</Link>
-				</AlertDescription>
-			</Alert>
-		</CheckoutLayout>
+							<Text fontSize="md" mt={5}>
+								Status: {data?.payment_intent?.status ?? <LoadingSpinner />}
+							</Text>
+							<Text fontSize="md" mt={2}>
+								<ClearCart />
+							</Text>
+							<Link href="/">
+								<Button size="md" mt="24px" rightIcon={<ArrowLeftIcon />}>
+									Back to Home
+								</Button>
+							</Link>
+						</AlertDescription>
+					</Alert>
+				</CheckoutLayout>
+			) : (
+				<CheckoutLayout>
+					<Alert
+						status="warning"
+						variant="subtle"
+						flexDirection="column"
+						alignItems="center"
+						justifyContent="center"
+						textAlign="center"
+						height="auto"
+					>
+						<AlertIcon boxSize="40px" mr={0} />
+						<AlertDescription maxWidth="sm" mt={2}>
+							<Text fontSize="md" mt={5}>
+								<LoadingSpinner />
+							</Text>
+						</AlertDescription>
+					</Alert>
+				</CheckoutLayout>
+			)}
+		</>
 	);
 };
 

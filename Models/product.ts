@@ -28,6 +28,10 @@ const ProductSchema: Schema = new Schema(
 			type: String,
 			required: true,
 		},
+		currency: {
+			type: String,
+			required: true,
+		},
 	},
 	{
 		timestamps: true,
