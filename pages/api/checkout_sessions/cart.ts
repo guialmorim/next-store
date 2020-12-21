@@ -1,7 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { products } from '@/data/prods.ts';
 import { validateCartItems } from 'use-shopping-cart/src/serverUtil';
 import Stripe from 'stripe';
+import { fetchGetJSON } from '@/utils/api-helpers';
+import { GET_PRODUCTS } from '@/config/api/endpoints';
+
+type TProduct = {
+	sku: string;
+	name: string;
+	description: string;
+	price: number;
+	image: string;
+	currency: string;
+};
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 	apiVersion: '2020-08-27',
@@ -13,6 +23,18 @@ export default async function handler(
 ) {
 	if (req.method === 'POST') {
 		try {
+			const products: Array<TProduct> = await fetchGetJSON(
+				process.env.BASE_URL + GET_PRODUCTS
+			);
+
+			if (!products || products.length <= 0) {
+				res.status(500).json({
+					statusCode: 500,
+					message: 'Something went wrong with your request',
+				});
+				return;
+			}
+
 			// Validate the cart details that were sent from the client.
 			const cartItems = req.body;
 			const line_items = validateCartItems(products, cartItems);
@@ -24,6 +46,7 @@ export default async function handler(
 				shipping_address_collection: {
 					allowed_countries: ['BR', 'US', 'CA'],
 				},
+				mode: 'payment',
 				line_items,
 				success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
 				cancel_url: `${req.headers.origin}/cart`,
