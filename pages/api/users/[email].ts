@@ -15,22 +15,25 @@ export default async (
 ): Promise<void> => {
 	const {
 		method,
-		body,
-		query: { id },
+		query: { email },
 	} = request;
 
 	switch (method) {
 		case 'GET':
 			try {
-				const user = await User.findById(id).populate('adresses').exec();
+				const user = await User.findOne({ email: email as string })
+					.populate('adresses')
+					.exec();
 
 				if (user) {
 					response.status(200).json(user);
 				} else {
-					response.status(404).json({ message: 'nenhum usuario encontrado.' });
+					response.status(404).json({ message: 'no user found.' });
 				}
 			} catch (error) {
-				response.status(500).json({ message: 'algo deu errado', error: error });
+				response
+					.status(500)
+					.json({ message: 'something went wrong', error: error });
 			}
 			break;
 		case 'PUT':

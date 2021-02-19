@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { useColorModeValue, Box } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 type TProps = {
 	children: ReactNode;

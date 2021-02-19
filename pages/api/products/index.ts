@@ -27,7 +27,7 @@ export default async (
 			try {
 				const product = await Product.create(body);
 				if (product) {
-					response.status(200).json({ message: 'Produto criado' });
+					response.status(201).json({ message: 'Produto criado' });
 				} else {
 					response.status(400).json({ message: 'algo deu errado' });
 				}

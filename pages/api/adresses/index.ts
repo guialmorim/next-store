@@ -18,7 +18,7 @@ export default async (
 	switch (method) {
 		case 'GET':
 			try {
-				const adressess = await Address.find();
+				const adressess = await Address.find({ user: body.userId });
 				if (adressess.length > 0) {
 					response.status(200).json(adressess);
 				} else {

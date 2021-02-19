@@ -16,7 +16,6 @@ import {
 	ListItem,
 	ListIcon,
 	Divider,
-	Badge,
 	Icon,
 	Flex,
 	Spacer,
@@ -24,8 +23,8 @@ import {
 } from '@chakra-ui/react';
 import { CheckCircleIcon, DeleteIcon } from '@chakra-ui/icons';
 import { useShoppingCart } from 'use-shopping-cart';
-import { fetchPostJSON } from '@/utils/api-helpers';
 import { Toast } from '@/utils/toast';
+import { fetchPostJSON } from '@/utils/api-helpers';
 
 interface IDrawerCartProps {
 	isOpen: boolean;

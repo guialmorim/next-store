@@ -14,7 +14,6 @@ import {
 	AlertTitle,
 	AlertIcon,
 	Container,
-	Skeleton,
 } from '@chakra-ui/react';
 import CheckoutLayout from '@/components/CheckoutLayout';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
@@ -30,6 +29,8 @@ const ResultPage: NextPage = () => {
 			: null,
 		fetchGetJSON
 	);
+	console.log(data);
+	console.log(error);
 
 	if (error || data?.statusCode === 500) {
 		return (
@@ -92,7 +93,8 @@ const ResultPage: NextPage = () => {
 							)}
 
 							<Text fontSize="md" mt={5}>
-								Status: {data?.payment_intent?.status ?? <LoadingSpinner />}
+								Status:{' '}
+								{data?.payment_intent?.status ?? <LoadingSpinner size="md" />}
 							</Text>
 							<Text fontSize="md" mt={2}>
 								<ClearCart />
@@ -119,7 +121,7 @@ const ResultPage: NextPage = () => {
 						<AlertIcon boxSize="40px" mr={0} />
 						<AlertDescription maxWidth="sm" mt={2}>
 							<Text fontSize="md" mt={5}>
-								<LoadingSpinner />
+								<LoadingSpinner size="md" />
 							</Text>
 						</AlertDescription>
 					</Alert>

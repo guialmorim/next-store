@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
-import Address, { IAddress } from '@/models/address';
-import { NativeError } from 'mongoose';
+import Address from '@/models/address';
 
 interface ResponseType {
 	message: string;
@@ -16,13 +15,13 @@ export default async (
 	const {
 		method,
 		body,
-		query: { id },
+		query: { userId },
 	} = request;
 
 	switch (method) {
 		case 'GET':
 			try {
-				const address = await Address.findById(id)
+				const address = await Address.find({ user: userId as any })
 					.populate({
 						path: 'user',
 						select: ['name', 'email'],
@@ -46,7 +45,7 @@ export default async (
 			break;
 		case 'PUT':
 			try {
-				const address = await Address.findByIdAndUpdate(id, body, {
+				const address = await Address.findByIdAndUpdate(userId, body, {
 					new: true,
 					runValidators: true,
 				});

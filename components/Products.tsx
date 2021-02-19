@@ -22,7 +22,8 @@ interface IProductProps {
 const Products: React.FC<IProductProps> = ({ products, preview = false }) => {
 	const { addItem, removeItem } = useShoppingCart();
 
-	const filteredProducts = preview ? products?.slice(0, 4) : products;
+	const filteredProducts =
+		products && preview ? products?.slice(0, 4) : products;
 
 	return (
 		<Grid templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap="2rem">

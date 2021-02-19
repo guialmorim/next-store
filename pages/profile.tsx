@@ -6,29 +6,44 @@ import AddressesLayout from '@/components/AddressesLayout';
 import Address, { TAddress } from '@/components/Address';
 import ProfileInfo from '@/components/ProfileInfo';
 import { fetchGetJSON } from '@/utils/api-helpers';
-import { GET_ADRESSES } from '@/config/api/endpoints';
-import { Center, Divider } from '@chakra-ui/react';
+import { GET_USER_WITH_ADRESSES } from '@/config/api/endpoints';
+import { getSession } from 'next-auth/client';
 
-type TProps = {
-	adresses: Array<TAddress>;
-};
+interface IUser {
+	user: {
+		adresses: Array<TAddress>;
+		_id: string;
+		name: string;
+		email: string;
+		image: string;
+		createdAt: string;
+		updatedAt: string;
+	};
+}
 
-export const getServerSideProps: GetServerSideProps = async () => {
-	const addresses = await fetchGetJSON(process.env.BASE_URL + GET_ADRESSES);
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+	const session = await getSession(ctx);
+
+	const user: IUser = await fetchGetJSON(
+		`${process.env.BASE_URL}${GET_USER_WITH_ADRESSES}/${session?.user?.email}`
+	);
+
+	console.log(user);
+
 	return {
 		props: {
-			adresses: addresses,
+			user: user,
 		},
 	};
 };
 
-const Profile: NextPage<TProps> = ({ adresses }) => (
+const Profile: NextPage<IUser> = ({ user }) => (
 	<ProfileLayout>
 		<ProfileInfoLayout>
 			<ProfileInfo />
 		</ProfileInfoLayout>
 		<AddressesLayout>
-			<Address adresses={adresses} />
+			<Address adresses={user.adresses} />
 		</AddressesLayout>
 	</ProfileLayout>
 );

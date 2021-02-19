@@ -28,7 +28,8 @@ interface IProductProps {
 
 export const getStaticProps: GetStaticProps = async () => {
 	const products: Array<TProduct> = await fetchGetJSON(
-		process.env.BASE_URL + GET_PRODUCTS
+		process.env.BASE_URL + GET_PRODUCTS,
+		'GET'
 	);
 	return {
 		props: { products },

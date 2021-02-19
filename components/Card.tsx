@@ -1,12 +1,5 @@
 import React, { ReactNode } from 'react';
-import {
-	Box,
-	Image,
-	Badge,
-	Button,
-	useColorModeValue,
-	Spacer,
-} from '@chakra-ui/react';
+import { Box, Image, Badge, Button, useColorModeValue } from '@chakra-ui/react';
 
 interface IProps {
 	title: string;
