@@ -128,18 +128,15 @@ const Header: React.FC = () => {
 					</MenuItems>
 
 					<MenuItems isLink={false} color={colorForItems}>
-						<CartButton onClick={() => setIsDrawerCartOpen(!isDrawerCartOpen)}>
-							<Icon
-								as={AiOutlineShoppingCart}
-								cursor="pointer"
-								fontSize="1.5rem"
-								color={colorForItems}
-							/>
+						<Icon
+							onClick={() => setIsDrawerCartOpen(!isDrawerCartOpen)}
+							as={AiOutlineShoppingCart}
+							cursor="pointer"
+							fontSize="1.5rem"
+							color={colorForItems}
+						/>
 
-							{cartCount > 0 && (
-								<CartNotification>{cartCount}</CartNotification>
-							)}
-						</CartButton>
+						{cartCount > 0 && <CartNotification>{cartCount}</CartNotification>}
 					</MenuItems>
 					<MenuItems isLink={false}>
 						<Icon
@@ -175,30 +172,30 @@ const Header: React.FC = () => {
 									</MenuButton>
 									<MenuList colorScheme="purple">
 										<MenuGroup title="Settings">
-											<Link href="/settings">
-												<MenuItem>
-													<>
-														<Text mr={2}>Preferences</Text>
+											<MenuItem>
+												<Link href="/settings">
+													<Text>
+														Preferences&nbsp;
 														<SettingsIcon />
-													</>
-												</MenuItem>
-											</Link>
+													</Text>
+												</Link>
+											</MenuItem>
 										</MenuGroup>
 										<MenuDivider />
 										<MenuGroup title="Account">
-											<Link href="/profile">
-												<MenuItem>
-													<>
-														<Text mr={2}>Profile</Text>
+											<MenuItem>
+												<Link href="/profile">
+													<Text>
+														Profile &nbsp;
 														<AiOutlineUser />
-													</>
-												</MenuItem>
-											</Link>
+													</Text>
+												</Link>
+											</MenuItem>
 											<MenuItem onClick={() => signOut()}>
-												<>
-													<Text mr={2}>Sign Out</Text>
+												<Text>
+													Sign Out&nbsp;
 													<GoSignOut />
-												</>
+												</Text>
 											</MenuItem>
 										</MenuGroup>
 									</MenuList>

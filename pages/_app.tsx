@@ -33,16 +33,18 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-const App = ({ Component, pageProps }: AppProps) => (
-	<ChakraProvider theme={customTheme}>
-		<Provider session={pageProps.session}>
-			<CSSReset />
-			<CartProvider>
-				<Header />
-				<Component {...pageProps} />
-			</CartProvider>
-		</Provider>
-	</ChakraProvider>
-);
+const App = ({ Component, pageProps }: AppProps) => {
+	return (
+		<ChakraProvider theme={customTheme}>
+			<Provider session={pageProps.session}>
+				<CSSReset />
+				<CartProvider>
+					<Header />
+					<Component {...pageProps} />
+				</CartProvider>
+			</Provider>
+		</ChakraProvider>
+	);
+};
 
 export default App;

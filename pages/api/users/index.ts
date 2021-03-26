@@ -12,22 +12,41 @@ export default async (
 	request: NextApiRequest,
 	response: NextApiResponse //<ResponseType>
 ): Promise<void> => {
-	const { method, body } = request;
+	const { method, query } = request;
 
 	switch (method) {
 		case 'GET':
-			try {
-				const users = await User.find();
-				if (users.length > 0) {
-					response.status(200).json(users);
-				} else {
-					response.status(404).json({ message: 'no users found.' });
+			if (query?.email) {
+				try {
+					const user = await User.findOne({ email: query.email as string })
+						.populate('adresses')
+						.exec();
+
+					if (user) {
+						response.status(200).json(user);
+					} else {
+						response.status(404).json({ message: 'no user found.' });
+					}
+				} catch (error) {
+					response
+						.status(500)
+						.json({ message: 'something went wrong', error: error });
 				}
-			} catch (error) {
-				response
-					.status(500)
-					.json({ message: 'something went wrong', error: error });
+			} else {
+				try {
+					const users = await User.find();
+					if (users.length > 0) {
+						response.status(200).json(users);
+					} else {
+						response.status(404).json({ message: 'no users found.' });
+					}
+				} catch (error) {
+					response
+						.status(500)
+						.json({ message: 'something went wrong', error: error });
+				}
 			}
+
 			break;
 		case 'POST':
 			try {

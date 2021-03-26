@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
 	Stack,
 	InputRightElement,
@@ -7,26 +7,19 @@ import {
 	Tooltip,
 	Center,
 	Button,
-	Container,
-	Alert,
-	AlertIcon,
-	AlertTitle,
-	AlertDescription,
 	InputLeftAddon,
 	Text,
 } from '@chakra-ui/react';
 import { TAddress } from '@/components/Address';
-import { CheckIcon, NotAllowedIcon, ArrowLeftIcon } from '@chakra-ui/icons';
+import { CheckIcon, NotAllowedIcon } from '@chakra-ui/icons';
 import { Formik, Form, Field, FormikHelpers } from 'formik';
 import * as yup from 'yup';
 import { Input } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { fetchGetJSON, fetchPostJSON } from '@/utils/api-helpers';
-import { PUT_ADDRESS } from '@/config/api/endpoints';
-import useSWR from 'swr';
+import { fetchPostJSON } from '@/utils/api-helpers';
+import { POST_ADDRESS, PUT_ADDRESS } from '@/config/api/endpoints';
+import { Toast } from '@/utils/toast';
 
 const schema = yup.object({
 	street: yup.string().required('Este campo é obrigatório.'),
@@ -36,84 +29,25 @@ const schema = yup.object({
 	zip: yup.number().required('Este campo é obrigatório.'),
 });
 
-const AddressForm: React.FC = () => {
-	const [session, loading] = useSession();
+interface IProps {
+	children?: ReactNode;
+	address: TAddress;
+}
 
-	const router = useRouter();
-
-	// Fetch CheckoutSession from static page via
-	const { data: addressResponse, error, isValidating } = useSWR(
-		router.query.id && router.query.id !== 'new'
-			? `/api/adresses/${router.query.id}`
-			: null,
-		fetchGetJSON,
-		{
-			revalidateOnFocus: true,
-			revalidateOnReconnect: true,
-		}
-	);
-
-	const {
-		data: userData,
-		error: errorUser,
-		isValidating: isValidatingUser,
-	} = useSWR(
-		session?.user?.email ? `/api/users/${session?.user?.email}` : null,
-		fetchGetJSON
-	);
-
-	if (loading)
-		return (
-			<Center>
-				<Text>Loading</Text>
-				<LoadingSpinner size="md" />
-			</Center>
-		);
-
-	if (error || addressResponse?.addresses?.length <= 0 || !userData?.data) {
-		return (
-			<Container>
-				<Alert
-					status="error"
-					variant="subtle"
-					flexDirection="column"
-					alignItems="center"
-					justifyContent="center"
-					textAlign="center"
-					height="auto"
-				>
-					<AlertIcon boxSize="40px" mr={0} />
-					<AlertTitle mt={4} mb={1} fontSize="lg">
-						Failed to load!
-					</AlertTitle>
-					<AlertDescription maxWidth="sm">
-						{addressResponse?.message} <br />
-						{userData?.message}
-					</AlertDescription>
-					<AlertDescription maxWidth="sm">
-						Please, go back and try again
-					</AlertDescription>
-					<Link href="/">
-						<Button size="sm" mt="1rem" rightIcon={<ArrowLeftIcon />}>
-							Back to Home
-						</Button>
-					</Link>
-				</Alert>
-			</Container>
-		);
-	}
-
+const AddressForm: React.FC<IProps> = ({ address }) => {
+	console.log(address);
 	return (
 		<Box>
 			<Formik
 				enableReinitialize
 				initialValues={
-					addressResponse?.addresses || {
+					address || {
 						street: '',
 						number: '',
 						city: '',
 						state: '',
 						zip: '',
+						user: '',
 					}
 				}
 				validationSchema={schema}
@@ -130,12 +64,50 @@ const AddressForm: React.FC = () => {
 
 					console.log(values);
 
-					const response = await fetchPostJSON(
-						`${PUT_ADDRESS}/${values._id}`,
-						'PUT',
-						values
-					);
-					console.log(response);
+					try {
+						if (values._id) {
+							const { message, statusCode, data } = await fetchPostJSON(
+								`${PUT_ADDRESS}/${values._id}`,
+								'PUT',
+								values
+							);
+							if (statusCode === 200) {
+								Toast({
+									title: 'aww yeah!',
+									description: message,
+									status: 'success',
+								});
+							} else {
+								Toast({
+									title: 'Oops!',
+									description: message,
+									status: 'error',
+								});
+							}
+						} else {
+							delete values._id;
+							const { message, statusCode, data } = await fetchPostJSON(
+								`${POST_ADDRESS}`,
+								'POST',
+								values
+							);
+							if (statusCode === 200) {
+								Toast({
+									title: 'aww yeah!',
+									description: message,
+									status: 'success',
+								});
+							} else {
+								Toast({
+									title: 'Oops!',
+									description: message,
+									status: 'error',
+								});
+							}
+						}
+					} catch (error) {
+						console.error(error);
+					}
 
 					setSubmitting(false);
 				}}
@@ -148,6 +120,7 @@ const AddressForm: React.FC = () => {
 					handleBlur,
 					handleSubmit,
 					isSubmitting,
+					isValidating,
 				}) => (
 					<Form onSubmit={handleSubmit}>
 						<Stack spacing={5}>
@@ -177,7 +150,7 @@ const AddressForm: React.FC = () => {
 										children={
 											errors.street && touched.street && errors.street ? (
 												<NotAllowedIcon color="red.500" />
-											) : !addressResponse || isValidating ? (
+											) : isValidating ? (
 												<LoadingSpinner size="sm" />
 											) : (
 												<CheckIcon color="green.500" />
@@ -213,7 +186,7 @@ const AddressForm: React.FC = () => {
 										children={
 											errors.number && touched.number && errors.number ? (
 												<NotAllowedIcon color="red.500" />
-											) : !addressResponse || isValidating ? (
+											) : isValidating ? (
 												<LoadingSpinner size="sm" />
 											) : (
 												<CheckIcon color="green.500" />
@@ -249,7 +222,7 @@ const AddressForm: React.FC = () => {
 										children={
 											errors.zip && touched.zip && errors.zip ? (
 												<NotAllowedIcon color="red.500" />
-											) : !addressResponse || isValidating ? (
+											) : isValidating ? (
 												<LoadingSpinner size="sm" />
 											) : (
 												<CheckIcon color="green.500" />
@@ -285,7 +258,7 @@ const AddressForm: React.FC = () => {
 										children={
 											errors.city && touched.city && errors.city ? (
 												<NotAllowedIcon color="red.500" />
-											) : !addressResponse || isValidating ? (
+											) : isValidating ? (
 												<LoadingSpinner size="sm" />
 											) : (
 												<CheckIcon color="green.500" />
@@ -321,7 +294,7 @@ const AddressForm: React.FC = () => {
 										children={
 											errors.state && touched.state && errors.state ? (
 												<NotAllowedIcon color="red.500" />
-											) : !addressResponse || isValidating ? (
+											) : isValidating ? (
 												<LoadingSpinner size="sm" />
 											) : (
 												<CheckIcon color="green.500" />

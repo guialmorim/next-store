@@ -4,12 +4,13 @@ import { ChevronRightIcon, AddIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 
 export type TAddress = {
-	_id: string;
+	_id?: string;
 	street: string;
 	number: number;
 	city: string;
 	state: string;
 	zip: number;
+	user: string | undefined;
 };
 
 type TProps = {

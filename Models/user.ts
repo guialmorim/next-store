@@ -1,11 +1,18 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IAddress } from '@/models/address';
+import { IAddress, IAddressMongooseModel } from '@/models/address';
 
-export interface IUser extends Document {
+export interface IUser {
+	_id: string;
+	name: String;
+	email: String;
+	adresses: IAddress[];
+}
+
+export interface IUserMongooseModel extends Document {
 	name: String;
 	email: String;
 	age: Number;
-	adresses: IAddress[];
+	adresses: IAddressMongooseModel[];
 }
 
 const UserSchema: Schema = new Schema(
@@ -29,5 +36,5 @@ const UserSchema: Schema = new Schema(
 	}
 );
 
-export default (mongoose.models.User as mongoose.Model<IUser>) ||
-	mongoose.model<IUser>('User', UserSchema);
+export default (mongoose.models.User as mongoose.Model<IUserMongooseModel>) ||
+	mongoose.model<IUserMongooseModel>('User', UserSchema);

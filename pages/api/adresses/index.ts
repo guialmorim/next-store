@@ -1,17 +1,19 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
 import Address from '@/models/address';
-import User, { IUser } from '@/models/user';
+import User from '@/models/user';
 
 interface ResponseType {
+	statusCode: 200 | 500 | 400 | 404;
 	message: string;
+	data?: any;
+	error?: string;
 }
-
 connect();
 
 export default async (
 	request: NextApiRequest,
-	response: NextApiResponse //<ResponseType>
+	response: NextApiResponse<ResponseType>
 ): Promise<void> => {
 	const { method, body } = request;
 
@@ -20,21 +22,28 @@ export default async (
 			try {
 				const adressess = await Address.find({ user: body.userId });
 				if (adressess.length > 0) {
-					response.status(200).json(adressess);
+					response
+						.status(200)
+						.json({ message: 'success', statusCode: 200, data: adressess });
 				} else {
 					response
 						.status(404)
-						.json({ message: 'nenhum endereço encontrado encontrado.' });
+						.json({ message: 'address not found.', statusCode: 404 });
 				}
 			} catch (error) {
-				response.status(500).json({ message: 'algo deu errado', error: error });
+				response
+					.status(500)
+					.json({ statusCode: 500, message: 'algo deu errado', error: error });
 			}
 			break;
 		case 'POST':
 			try {
-				const address = await Address.create(body);
+				console.log(body);
 
+				const address = await Address.create(body);
 				if (address) {
+					console.log(body);
+
 					const addReftoUser = await User.findByIdAndUpdate(
 						body.user,
 						{
@@ -44,24 +53,36 @@ export default async (
 							useFindAndModify: false,
 						}
 					);
+					console.log(addReftoUser);
 
 					if (addReftoUser) {
-						response
-							.status(200)
-							.json({ message: 'Endereço criado', data: address });
+						response.status(200).json({
+							statusCode: 200,
+							message: 'Endereço criado',
+							data: address,
+						});
 					} else {
 						await Address.findByIdAndDelete(address._id);
-						response
-							.status(501)
-							.json({ message: 'algo deu errado ao criar o endereço' });
+						response.status(501).json({
+							statusCode: 500,
+							message: 'algo deu errado ao criar o endereço',
+						});
 					}
+
+					response
+						.status(400)
+						.json({ statusCode: 400, message: 'algo deu errado' });
 				} else {
-					response.status(400).json({ message: 'algo deu errado' });
+					response
+						.status(400)
+						.json({ statusCode: 400, message: 'algo deu errado' });
 				}
 			} catch (error) {
-				response
-					.status(500)
-					.json({ message: 'algo deu errado ao criar endereço' });
+				response.status(500).json({
+					statusCode: 500,
+					message: 'algo deu errado ao criar endereço',
+					error: error,
+				});
 			}
 			break;
 
