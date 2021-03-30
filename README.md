@@ -2,11 +2,11 @@
 
 <h1 align="center">Next Store :convenience_store: </h1>
 
-see an [LIVE EXAMPLE!](https://next-store.vercel.app) :sparkles
+See an [LIVE EXAMPLE!](https://next-store.vercel.app) :sparkles:
 
 An complete e-commerce web application using [**Next.js**](https://github.com/zeit/next.js/) and [**MongoDB**](https://www.mongodb.com/), designed with simplicity for learning and real-world applicability in mind.
 
-### this project uses only [Typescript](https://www.typescriptlang.org)
+### This project uses only [Typescript](https://www.typescriptlang.org)
 
 ## Dependencies
 
