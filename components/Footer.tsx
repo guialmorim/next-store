@@ -17,16 +17,14 @@ const Footer: React.FC = () => {
 			justify="center"
 			wrap="wrap"
 			padding="1.5rem"
-			bg={backGroundColorForNavBar}
-			color={colorForNavBar}
+			color="#722fb7"
+			bg="#ffffff"
+			boxShadow="3px 0 10px 3px #888888"
 		>
 			<Flex align="center" mr={5}>
-				<Heading as="h5" size="md" fontWeight="400">
-					Made with <Icon as={AiOutlineHeart} /> by{' '}
-					<Link
-						href="https://github.com/guialmorim?tab=repositories"
-						isExternal
-					>
+				<Heading as="h6" size="sm" fontWeight="300">
+					Feito com <Icon as={AiOutlineHeart} /> por{' '}
+					<Link href="https://github.com/guialmorim" isExternal>
 						Guilherme Almorim <ExternalLinkIcon mx="2px" />
 					</Link>
 				</Heading>

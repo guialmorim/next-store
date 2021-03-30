@@ -1,6 +1,12 @@
 import React from 'react';
-import { Spinner, Text } from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
 
-const LoadingSpinner: React.FC = () => <Spinner color="red.500" size="md" />;
+type TProps = {
+	size: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+};
+
+const LoadingSpinner: React.FC<TProps> = (props) => (
+	<Spinner color="purple.500" {...props} />
+);
 
 export default LoadingSpinner;

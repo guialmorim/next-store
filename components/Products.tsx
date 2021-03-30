@@ -4,6 +4,7 @@ import Card from '@/components/Card';
 import { Grid } from '@chakra-ui/react';
 import { Toast } from '@/utils/toast';
 import { CURRENCY } from '@/config/stripe';
+import { useSession } from 'next-auth/client';
 
 type TProduct = {
 	sku: string;
@@ -20,9 +21,12 @@ interface IProductProps {
 }
 
 const Products: React.FC<IProductProps> = ({ products, preview = false }) => {
+	const [session, loading] = useSession();
+
 	const { addItem, removeItem } = useShoppingCart();
 
-	const filteredProducts = preview ? products?.slice(0, 4) : products;
+	const filteredProducts =
+		products && preview ? products?.slice(0, 4) : products;
 
 	return (
 		<Grid templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap="2rem">
@@ -38,22 +42,32 @@ const Products: React.FC<IProductProps> = ({ products, preview = false }) => {
 
 				const AddItemToCart = React.useCallback(
 					(product: TProduct) => {
+						if (!session?.user.email) {
+							Toast({
+								title: 'Atenção',
+								description:
+									'Você precisa estar logado para colocar produtos em seu carrinho!',
+								status: 'warning',
+							});
+							return;
+						}
 						addItem(product);
 						Toast({
-							title: 'Thank you!',
-							description: `${product.name} added in your cart`,
+							title: 'Obrigado!',
+							description: `${product.name} foi adicionado no seu carrinho`,
 							status: 'success',
 						});
 					},
-					[product]
+					[product, session]
 				);
+
 				const RemoveItemFromCart = React.useCallback(
 					(sku: string) => {
 						removeItem(sku);
 						Toast({
-							title: 'Removed',
-							description: 'product removed from your cart',
-							status: 'success',
+							title: 'Removido',
+							description: 'produto removido do seu carrinho',
+							status: 'info',
 						});
 					},
 					[product]

@@ -1,13 +1,22 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IUser } from '@/models/user';
+import { IUserMongooseModel, IUser } from '@/models/user';
 
-export interface IAddress extends Document {
+export interface IAddress {
 	street: string;
 	number: number;
 	city: string;
 	state: string;
 	zip: number;
 	user: IUser;
+}
+
+export interface IAddressMongooseModel extends Document {
+	street: string;
+	number: number;
+	city: string;
+	state: string;
+	zip: number;
+	user: IUserMongooseModel;
 }
 
 const AddressSchema: Schema = new Schema(
@@ -24,5 +33,6 @@ const AddressSchema: Schema = new Schema(
 	}
 );
 
-export default (mongoose.models.Address as mongoose.Model<IAddress>) ||
-	mongoose.model<IAddress>('Address', AddressSchema);
+export default (mongoose.models
+	.Address as mongoose.Model<IAddressMongooseModel>) ||
+	mongoose.model<IAddressMongooseModel>('Address', AddressSchema);

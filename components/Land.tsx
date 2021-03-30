@@ -82,7 +82,7 @@ const Land: React.FC<TProps> = ({
 					color="primary.800"
 					opacity={0.6}
 				>
-					No credit card required.
+					Não é necessário cartão de crédito.
 				</Text>
 			</Stack>
 			<Box w={{ base: '80%', sm: '60%', md: '50%' }} mb={{ base: 12, md: 0 }}>
@@ -93,11 +93,11 @@ const Land: React.FC<TProps> = ({
 };
 
 Land.defaultProps = {
-	title: 'Amazing E-Commerce application made with Next Js and Chakra UI',
+	title: 'Um E-Commerce feito com Next Js, Chakra UI e Styled Components',
 	subtitle:
-		'This is the subheader section where you describe the basic benefits of your product',
+		'Esta é a seção do subtítulo, onde você descreve os benefícios básicos do seu produto',
 	image: '/landimage.webp',
-	ctaText: 'See all of our products!',
+	ctaText: 'Veja todos os nossos produtos!',
 	ctaLink: '/products',
 };
 

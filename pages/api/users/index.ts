@@ -12,31 +12,54 @@ export default async (
 	request: NextApiRequest,
 	response: NextApiResponse //<ResponseType>
 ): Promise<void> => {
-	const { method, body } = request;
+	const { method, query } = request;
 
 	switch (method) {
 		case 'GET':
-			try {
-				const users = await User.find();
-				if (users.length > 0) {
-					response.status(200).json(users);
-				} else {
-					response.status(404).json({ message: 'nenhum usuario encontrado.' });
+			if (query?.email) {
+				try {
+					const user = await User.findOne({ email: query.email as string })
+						.populate('adresses')
+						.exec();
+
+					if (user) {
+						response.status(200).json(user);
+					} else {
+						response.status(404).json({ message: 'no user found.' });
+					}
+				} catch (error) {
+					response
+						.status(500)
+						.json({ message: 'something went wrong', error: error });
 				}
-			} catch (error) {
-				response.status(500).json({ message: 'algo deu errado', error: error });
+			} else {
+				try {
+					const users = await User.find();
+					if (users.length > 0) {
+						response.status(200).json(users);
+					} else {
+						response.status(404).json({ message: 'no users found.' });
+					}
+				} catch (error) {
+					response
+						.status(500)
+						.json({ message: 'something went wrong', error: error });
+				}
 			}
+
 			break;
 		case 'POST':
 			try {
 				const user = await User.create(body);
 				if (user) {
-					response.status(200).json({ message: 'Usuario criado' });
+					response.status(201).json({ message: 'User created' });
 				} else {
-					response.status(400).json({ message: 'algo deu errado' });
+					response.status(400).json({ message: 'something went wrong' });
 				}
 			} catch (error) {
-				response.status(500).json({ message: 'algo deu errado', error: error });
+				response
+					.status(500)
+					.json({ message: 'something went wrong', error: error });
 			}
 			break;
 		default:

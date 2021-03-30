@@ -1,7 +1,8 @@
 import { NextPage } from 'next';
-import { Heading } from '@chakra-ui/react';
+import Head from 'next/head';
+import { Fragment } from 'react';
+import { Heading, Box } from '@chakra-ui/react';
 import Products from '@/components/Products';
-import ProductsLayout from '@/components/ProductsLayout';
 import { GetStaticProps } from 'next';
 import { fetchGetJSON } from '@/utils/api-helpers';
 import { GET_PRODUCTS } from '@/config/api/endpoints';
@@ -30,19 +31,34 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const ProductsPage: NextPage<IProductProps> = ({ products }) => (
-	<ProductsLayout>
-		<Heading
-			as="h1"
-			size="xl"
-			fontWeight="bold"
-			color="primary.800"
-			textAlign={['center', 'center', 'left', 'left']}
-			mb={7}
+	<Fragment>
+		<Head>
+			<title>Next Store | Produtos</title>
+			<link rel="icon" href="/favicon.ico" />
+		</Head>
+		<Box
+			alignItems="center"
+			justifyItems="center"
+			mx="auto"
+			p="5"
+			bg="transparent"
+			maxW="80rem"
+			mt="calc(10vh + 2rem)"
+			mb="5rem"
 		>
-			Our Products
-		</Heading>
-		<Products products={products} />
-	</ProductsLayout>
+			<Heading
+				as="h1"
+				size="xl"
+				fontWeight="bold"
+				color="primary.800"
+				textAlign={['center', 'center', 'left', 'left']}
+				mb={7}
+			>
+				Nossos Produtos
+			</Heading>
+			<Products products={products} />
+		</Box>
+	</Fragment>
 );
 
 export default ProductsPage;

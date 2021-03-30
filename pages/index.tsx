@@ -1,16 +1,14 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { NextPage } from 'next';
-import LandingLayout from '@/components/LandingLayout';
 import Products from '@/components/Products';
-import ProductsLayout from '@/components/ProductsLayout';
 import Land from '@/components/Land';
-import Footer from '@/components/Footer';
 import { GetStaticProps } from 'next';
 import { fetchGetJSON } from '@/utils/api-helpers';
 import { GET_PRODUCTS } from '@/config/api/endpoints';
-import { Box, Heading, Button } from '@chakra-ui/react';
+import { Box, Heading, Button, Flex } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
+import Footer from '@/components/Footer';
 
 type TProduct = {
 	sku: string;
@@ -41,10 +39,23 @@ const Home: NextPage<IProductProps> = ({ products }) => (
 			<title>Next Store</title>
 			<link rel="icon" href="/favicon.ico" />
 		</Head>
-		<LandingLayout>
+		<Flex
+			direction="column"
+			align="center"
+			maxW={{ xl: '1200px' }}
+			m="10vh auto"
+		>
 			<Land />
-		</LandingLayout>
-		<ProductsLayout>
+		</Flex>
+		<Box
+			alignItems="center"
+			justifyItems="center"
+			mx="auto"
+			p="5"
+			bg="transparent"
+			maxW="80rem"
+			my="5rem"
+		>
 			<Heading
 				as="h1"
 				size="xl"
@@ -53,7 +64,7 @@ const Home: NextPage<IProductProps> = ({ products }) => (
 				textAlign={['center', 'center', 'left', 'left']}
 				mb={10}
 			>
-				Check out the amazing products that we have
+				Confira os produtos incríveis que temos!
 			</Heading>
 			<Products products={products} preview={true} />
 			<Box my="2rem">
@@ -67,11 +78,11 @@ const Home: NextPage<IProductProps> = ({ products }) => (
 						size="md"
 						rightIcon={<ChevronRightIcon />}
 					>
-						Show me all your products!
+						Mostre-me todos os produtos!
 					</Button>
 				</Link>
 			</Box>
-		</ProductsLayout>
+		</Box>
 		<Footer />
 	</>
 );
