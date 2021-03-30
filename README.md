@@ -1,8 +1,8 @@
 [![Next.js](https://assets.zeit.co/image/upload/v1538361091/repositories/next-js/next-js.png)](https://nextjs.org)
 
-# Next Store :convenience_store
+<h1 align="center">Next Store :convenience_store: </h1>
 
-# see an [LIVE EXAMPLE!](https://next-store.vercel.app) :sparkles
+<h3 align="center"> see an [LIVE EXAMPLE!](https://next-store.vercel.app) :sparkles: </h3>
 
 An complete e-commerce web application using [**Next.js**](https://github.com/zeit/next.js/) and [**MongoDB**](https://www.mongodb.com/), designed with simplicity for learning and real-world applicability in mind.
 
