@@ -5,21 +5,19 @@ import {
 	InputGroup,
 	Box,
 	Tooltip,
-	Center,
 	Button,
 	InputLeftAddon,
-	Text,
 } from '@chakra-ui/react';
 import { TAddress } from '@/components/Address';
 import { CheckIcon, NotAllowedIcon } from '@chakra-ui/icons';
 import { Formik, Form, Field, FormikHelpers } from 'formik';
 import * as yup from 'yup';
 import { Input } from '@chakra-ui/react';
-import { useSession } from 'next-auth/client';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { fetchPostJSON } from '@/utils/api-helpers';
 import { POST_ADDRESS, PUT_ADDRESS } from '@/config/api/endpoints';
 import { Toast } from '@/utils/toast';
+import { useRouter } from 'next/router';
 
 const schema = yup.object({
 	street: yup.string().required('Este campo é obrigatório.'),
@@ -35,7 +33,7 @@ interface IProps {
 }
 
 const AddressForm: React.FC<IProps> = ({ address }) => {
-	console.log(address);
+	const router = useRouter();
 	return (
 		<Box>
 			<Formik
@@ -77,6 +75,7 @@ const AddressForm: React.FC<IProps> = ({ address }) => {
 									description: message,
 									status: 'success',
 								});
+								router.push('/profile');
 							} else {
 								Toast({
 									title: 'Oops!',
@@ -97,6 +96,7 @@ const AddressForm: React.FC<IProps> = ({ address }) => {
 									description: message,
 									status: 'success',
 								});
+								router.push('/profile');
 							} else {
 								Toast({
 									title: 'Oops!',
@@ -132,7 +132,7 @@ const AddressForm: React.FC<IProps> = ({ address }) => {
 								bg="red.500"
 							>
 								<InputGroup>
-									<InputLeftAddon children="Street" />
+									<InputLeftAddon children="Rua" />
 									<Field
 										isDisabled={isSubmitting}
 										variant="outline"
@@ -168,7 +168,7 @@ const AddressForm: React.FC<IProps> = ({ address }) => {
 								bg="red.500"
 							>
 								<InputGroup>
-									<InputLeftAddon children="Number" />
+									<InputLeftAddon children="Número" />
 									<Field
 										isDisabled={isSubmitting}
 										variant="outline"
@@ -204,7 +204,7 @@ const AddressForm: React.FC<IProps> = ({ address }) => {
 								bg="red.500"
 							>
 								<InputGroup>
-									<InputLeftAddon children="Zip Code" />
+									<InputLeftAddon children="CEP" />
 									<Field
 										isDisabled={isSubmitting}
 										variant="outline"
@@ -240,7 +240,7 @@ const AddressForm: React.FC<IProps> = ({ address }) => {
 								bg="red.500"
 							>
 								<InputGroup>
-									<InputLeftAddon children="City" />
+									<InputLeftAddon children="Cidade" />
 									<Field
 										isDisabled={isSubmitting}
 										variant="outline"
@@ -276,7 +276,7 @@ const AddressForm: React.FC<IProps> = ({ address }) => {
 								bg="red.500"
 							>
 								<InputGroup>
-									<InputLeftAddon children="State" />
+									<InputLeftAddon children="Estado" />
 									<Field
 										isDisabled={isSubmitting}
 										variant="outline"
@@ -309,7 +309,7 @@ const AddressForm: React.FC<IProps> = ({ address }) => {
 								disabled={isSubmitting}
 								colorScheme="purple"
 							>
-								Save
+								Salvar
 							</Button>
 
 							{/* <pre>{JSON.stringify(values, null, 2)}</pre> */}

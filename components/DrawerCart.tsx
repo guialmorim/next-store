@@ -21,7 +21,11 @@ import {
 	Spacer,
 	Tag,
 } from '@chakra-ui/react';
-import { CheckCircleIcon, DeleteIcon } from '@chakra-ui/icons';
+import {
+	CheckCircleIcon,
+	DeleteIcon,
+	ExternalLinkIcon,
+} from '@chakra-ui/icons';
 import { useShoppingCart } from 'use-shopping-cart';
 import { Toast } from '@/utils/toast';
 import { fetchPostJSON } from '@/utils/api-helpers';
@@ -74,7 +78,7 @@ const DrawerCart: React.FC<IDrawerCartProps> = ({ isOpen, onClose }) => {
 		clearCart();
 		Toast({
 			title: 'Aww yeah!',
-			description: 'Cart Cleared',
+			description: 'Carrinho limpo',
 			status: 'success',
 		});
 	}, []);
@@ -82,9 +86,9 @@ const DrawerCart: React.FC<IDrawerCartProps> = ({ isOpen, onClose }) => {
 	const RemoveItemFromCart = React.useCallback((sku: string) => {
 		removeItem(sku);
 		Toast({
-			title: 'Removed',
-			description: 'product removed from your cart',
-			status: 'success',
+			title: 'Removido',
+			description: 'produto removido do seu carrinho',
+			status: 'info',
 		});
 	}, []);
 
@@ -93,14 +97,14 @@ const DrawerCart: React.FC<IDrawerCartProps> = ({ isOpen, onClose }) => {
 			<DrawerOverlay>
 				<DrawerContent>
 					<DrawerCloseButton />
-					<DrawerHeader>Your Cart</DrawerHeader>
+					<DrawerHeader>Seu Carrinho</DrawerHeader>
 
 					<DrawerBody>
 						<Box mb="3rem">
 							{allproducts.length > 0 ? (
 								<List spacing={3}>
-									{allproducts.map((product) => (
-										<>
+									{allproducts.map((product, index) => (
+										<React.Fragment key={index}>
 											<Flex>
 												<Box>
 													<ListItem>
@@ -138,53 +142,48 @@ const DrawerCart: React.FC<IDrawerCartProps> = ({ isOpen, onClose }) => {
 												</Box>
 											</Flex>
 											<Divider orientation="horizontal" />
-										</>
+										</React.Fragment>
 									))}
 								</List>
 							) : (
-								<Text>Your cart is empty.</Text>
+								<Text>Seu carrinho está vazio.</Text>
 							)}
 						</Box>
 
 						<Box mb="3rem">
 							<Link href="/cart">
 								<Button
-									bg={backGroundColorForItems}
-									color={colorForItems}
+									size="sm"
+									colorScheme="purple"
 									onClick={onClose}
+									rightIcon={<ExternalLinkIcon />}
 								>
-									See your cart with details
+									Veja todos os detalhes aqui.
 								</Button>
 							</Link>
 						</Box>
 						<Box>
 							<p suppressHydrationWarning>
-								<strong>Number of Items:</strong> {cartCount}
+								<strong>Quantidade de itens:</strong> {cartCount}
 							</p>
 							<p suppressHydrationWarning>
-								<strong>Total:</strong> {formattedTotalPrice}
+								<strong>Subtotal:</strong> {formattedTotalPrice}
 							</p>
 						</Box>
 					</DrawerBody>
 
 					<DrawerFooter>
 						<Button
-							bg={backGroundColorForItems}
-							color={colorForItems}
+							colorScheme="teal"
 							type="submit"
 							disabled={cartEmpty || loading}
 							mr={3}
 							onClick={handleCheckout}
 						>
-							Checkout
+							Finalizar Compra
 						</Button>
-						<Button
-							bg={backGroundColorForItems}
-							color={colorForItems}
-							type="button"
-							onClick={onClearCart}
-						>
-							Clear Cart
+						<Button colorScheme="blue" type="button" onClick={onClearCart}>
+							Limpar Carrinho
 						</Button>
 					</DrawerFooter>
 				</DrawerContent>

@@ -1,5 +1,7 @@
 import { NextPage } from 'next';
+import { Fragment } from 'react';
 import Link from 'next/link';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { fetchGetJSON } from '@/utils/api-helpers';
@@ -15,7 +17,6 @@ import {
 	AlertIcon,
 	Container,
 } from '@chakra-ui/react';
-import CheckoutLayout from '@/components/CheckoutLayout';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import ClearCart from '@/components/ClearCart';
 
@@ -29,45 +30,56 @@ const ResultPage: NextPage = () => {
 			: null,
 		fetchGetJSON
 	);
+
 	console.log(data);
 	console.log(error);
 
 	if (error || data?.statusCode === 500) {
 		return (
-			<Container>
-				<Alert
-					status="error"
-					variant="subtle"
-					flexDirection="column"
-					alignItems="center"
-					justifyContent="center"
-					textAlign="center"
-					height="auto"
-				>
-					<AlertIcon boxSize="40px" mr={0} />
-					<AlertTitle mt={4} mb={1} fontSize="lg">
-						Failed to load!
-					</AlertTitle>
-					<AlertDescription maxWidth="sm">
-						There was an error processing your request
-					</AlertDescription>
-					<AlertDescription maxWidth="sm">
-						Please, go back and try again
-					</AlertDescription>
-					<Link href="/">
-						<Button size="sm" mt="1rem" rightIcon={<ArrowLeftIcon />}>
-							Back to Home
-						</Button>
-					</Link>
-				</Alert>
-			</Container>
+			<Fragment>
+				<Head>
+					<title>Next Store | Pagamento</title>
+					<link rel="icon" href="/favicon.ico" />
+				</Head>
+				<Container mt="calc(10vh + 2rem)">
+					<Alert
+						status="error"
+						variant="subtle"
+						flexDirection="column"
+						alignItems="center"
+						justifyContent="center"
+						textAlign="center"
+						height="auto"
+					>
+						<AlertIcon boxSize="40px" mr={0} />
+						<AlertTitle mt={4} mb={1} fontSize="lg">
+							Falha ao carregar!
+						</AlertTitle>
+						<AlertDescription maxWidth="sm">
+							Houve um erro ao processar seu pedido.
+						</AlertDescription>
+						<AlertDescription maxWidth="sm">
+							Por favor volte e tente novamente.
+						</AlertDescription>
+						<Link href="/">
+							<Button size="sm" mt="1rem" rightIcon={<ArrowLeftIcon />}>
+								Voltar ao inicio
+							</Button>
+						</Link>
+					</Alert>
+				</Container>
+			</Fragment>
 		);
 	}
 
 	return (
-		<>
+		<Fragment>
+			<Head>
+				<title>Next Store | Pagamento</title>
+				<link rel="icon" href="/favicon.ico" />
+			</Head>
 			{data?.payment_intent?.status ? (
-				<CheckoutLayout>
+				<Container mt="calc(10vh + 2rem)">
 					<Alert
 						status="success"
 						variant="subtle"
@@ -80,14 +92,14 @@ const ResultPage: NextPage = () => {
 						<AlertIcon boxSize="40px" mr={0} />
 						<AlertTitle mt={4} mb={1}>
 							<Heading as="h1" size="lg">
-								Whoa! Congrats!
+								Whoa! Parabéns!
 							</Heading>
 						</AlertTitle>
 						<AlertDescription maxWidth="sm">
 							{data?.payment_intent?.status === 'succeeded' && (
 								<Box>
 									<Heading as="h4" size="sm">
-										Your payment has been confirmed.
+										Seu pagamento foi confirmado.
 									</Heading>
 								</Box>
 							)}
@@ -101,14 +113,14 @@ const ResultPage: NextPage = () => {
 							</Text>
 							<Link href="/">
 								<Button size="md" mt="24px" rightIcon={<ArrowLeftIcon />}>
-									Back to Home
+									Voltar ao inicio
 								</Button>
 							</Link>
 						</AlertDescription>
 					</Alert>
-				</CheckoutLayout>
+				</Container>
 			) : (
-				<CheckoutLayout>
+				<Container mt="calc(10vh + 2rem)">
 					<Alert
 						status="warning"
 						variant="subtle"
@@ -125,9 +137,9 @@ const ResultPage: NextPage = () => {
 							</Text>
 						</AlertDescription>
 					</Alert>
-				</CheckoutLayout>
+				</Container>
 			)}
-		</>
+		</Fragment>
 	);
 };
 

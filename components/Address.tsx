@@ -1,7 +1,12 @@
 import React, { ReactNode } from 'react';
 import { Button, Box } from '@chakra-ui/react';
-import { ChevronRightIcon, AddIcon } from '@chakra-ui/icons';
+import { EditIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons';
+import { ConfirmationAlert } from '@/components/Alert';
+import { Toast } from '@/utils/toast';
 import Link from 'next/link';
+import { fetchPostJSON } from '@/utils/api-helpers';
+import { DELETE_ADDRESS } from '@/config/api/endpoints';
+import { useRouter } from 'next/router';
 
 export type TAddress = {
 	_id?: string;
@@ -19,6 +24,35 @@ type TProps = {
 };
 
 const Addresses: React.FC<TProps> = ({ adresses }) => {
+	const router = useRouter();
+
+	const OnDeleteAddress = async (id: string) => {
+		const sure = await ConfirmationAlert(
+			'Atenção',
+			'Tem certeza que deseja apagar este endereço?'
+		);
+		if (sure) {
+			const { message, statusCode, data } = await fetchPostJSON(
+				`${DELETE_ADDRESS}/${id}`,
+				'DELETE'
+			);
+			if (statusCode === 200) {
+				Toast({
+					title: 'aww yeah!',
+					description: message,
+					status: 'success',
+				});
+				router.push('/profile');
+			} else {
+				Toast({
+					title: 'Oops!',
+					description: message,
+					status: 'error',
+				});
+			}
+		}
+	};
+
 	return (
 		<>
 			{adresses?.length > 0 ? (
@@ -44,7 +78,7 @@ const Addresses: React.FC<TProps> = ({ adresses }) => {
 									textTransform="uppercase"
 									ml="2"
 								>
-									Zip: {address.zip}
+									Cep: {address.zip}
 								</Box>
 							</Box>
 
@@ -62,22 +96,31 @@ const Addresses: React.FC<TProps> = ({ adresses }) => {
 								{address.city} - {address.state}
 							</Box>
 
-							<Box mt="1" textAlign="left">
+							<Box display="flex" justifyContent="space-between" mt="3">
 								<Link href={`address/${address._id}`}>
 									<Button
 										size="sm"
 										colorScheme="purple"
-										rightIcon={<ChevronRightIcon />}
+										rightIcon={<EditIcon />}
 									>
-										Edit
+										Editar
 									</Button>
 								</Link>
+
+								<Button
+									size="sm"
+									colorScheme="red"
+									color="white"
+									onClick={() => OnDeleteAddress(address._id!)}
+								>
+									<DeleteIcon />
+								</Button>
 							</Box>
 						</Box>
 					</Box>
 				))
 			) : (
-				<Box>You have no addresses</Box>
+				<Box>Você não possui endereços cadastrados</Box>
 			)}
 			<Box
 				m="0 auto"
@@ -97,17 +140,17 @@ const Addresses: React.FC<TProps> = ({ adresses }) => {
 						lineHeight="tight"
 						isTruncated
 					>
-						Create a new address
+						Criar novo endereço
 					</Box>
 
 					<Box fontSize="sm">
-						register an address so we can deliver your amazing product
+						registre um novo endereço para que possamos entregar seu produto!
 					</Box>
 
-					<Box mt="1" textAlign="left">
+					<Box mt="3" textAlign="left">
 						<Link href="/address/new">
 							<Button size="sm" colorScheme="purple" rightIcon={<AddIcon />}>
-								Create new address
+								Criar novo endereço
 							</Button>
 						</Link>
 					</Box>

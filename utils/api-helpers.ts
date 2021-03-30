@@ -1,7 +1,9 @@
 export async function fetchGetJSON(endpoint: string) {
 	try {
-		const data = await fetch(endpoint).then((res) => res.json());
-		return data;
+		const data = await fetch(endpoint);
+		if (!data) return null;
+		const json = await data.json();
+		return json;
 	} catch (err) {
 		throw new Error(err);
 	}

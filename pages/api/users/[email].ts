@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
 import User from '@/models/user';
-import { NativeError } from 'mongoose';
+import Address from '@/models/address';
 
 interface ResponseType {
 	statusCode: 200 | 500 | 400 | 404;
@@ -9,6 +9,7 @@ interface ResponseType {
 	data?: any;
 	error?: string;
 }
+
 connect();
 
 export default async (
@@ -24,7 +25,7 @@ export default async (
 		case 'GET':
 			try {
 				const user = await User.findOne({ email: email as string })
-					.populate('adresses')
+					.populate({ path: 'adresses' })
 					.exec();
 
 				if (user) {
@@ -37,6 +38,7 @@ export default async (
 						.json({ message: 'no user found.', statusCode: 404 });
 				}
 			} catch (error) {
+				console.log(error);
 				response.status(500).json({
 					message: 'something went wrong',
 					error: error,

@@ -24,11 +24,11 @@ export default async (
 				if (adressess.length > 0) {
 					response
 						.status(200)
-						.json({ message: 'success', statusCode: 200, data: adressess });
+						.json({ message: 'Sucesso', statusCode: 200, data: adressess });
 				} else {
 					response
 						.status(404)
-						.json({ message: 'address not found.', statusCode: 404 });
+						.json({ message: 'Endereço não encontrado.', statusCode: 404 });
 				}
 			} catch (error) {
 				response

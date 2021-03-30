@@ -35,24 +35,25 @@ export default async (
 				if (address) {
 					response
 						.status(200)
-						.json({ message: 'successs', statusCode: 200, data: address });
+						.json({ message: 'Sucesso', statusCode: 200, data: address });
 				} else {
-					response
-						.status(404)
-						.json({ statusCode: 404, data: [], message: 'no address found.' });
+					response.status(404).json({
+						statusCode: 404,
+						data: [],
+						message: 'Nenhum endereço encontrado.',
+					});
 				}
 			} catch (error) {
 				response.status(404).json({
 					statusCode: 400,
 					data: [],
-					message: 'no address found.',
+					message: 'Nenhum endereço encontrado.',
 					error: error.toStrig(),
 				});
 			}
 			break;
 		case 'PUT':
 			try {
-				console.log(body);
 				const address = await Address.findByIdAndUpdate(id, body, {
 					new: true,
 					runValidators: true,
@@ -62,19 +63,43 @@ export default async (
 				if (address) {
 					response.status(201).json({
 						statusCode: 200,
-						message: 'Address Updated successfully',
+						message: 'Endereço Atualizado com sucesso',
 						data: address,
 					});
 				} else {
 					response.status(500).json({
 						statusCode: 500,
-						message: 'something went wrong creating the address',
+						message: 'Algo deu errado ao atualizar o endereço',
 					});
 				}
 			} catch (error) {
 				response.status(500).json({
 					statusCode: 500,
-					message: 'something went wrong',
+					message: 'Algo deu errado',
+					error: error,
+				});
+			}
+			break;
+		case 'DELETE':
+			try {
+				const address = await Address.findByIdAndDelete(id);
+
+				if (address) {
+					response.status(200).json({
+						statusCode: 200,
+						message: 'Endereço apagado com sucesso',
+						data: address,
+					});
+				} else {
+					response.status(500).json({
+						statusCode: 500,
+						message: 'Algo deu errado ao criar o endereço',
+					});
+				}
+			} catch (error) {
+				response.status(500).json({
+					statusCode: 500,
+					message: 'Algo deu errado',
 					error: error,
 				});
 			}
