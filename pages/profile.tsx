@@ -1,16 +1,19 @@
 import { Fragment } from 'react';
 import Head from 'next/head';
 import { NextPage, GetServerSideProps } from 'next';
+import { IOrder } from '@/models/order';
 import Address, { TAddress } from '@/components/Address';
+import Orders from '@/components/Orders';
 import ProfileInfo from '@/components/ProfileInfo';
 import { fetchGetJSON } from '@/utils/api-helpers';
-import { GET_USER } from '@/config/api/endpoints';
+import { GET_ADRESS, GET_ORDERS, GET_USER } from '@/config/api/endpoints';
 import { getSession } from 'next-auth/client';
 import { Heading, Stack, Box, SimpleGrid, Flex } from '@chakra-ui/react';
 
 interface IUser {
 	user: {
-		adresses: Array<TAddress>;
+		addresses: Array<TAddress>;
+		orders: Array<IOrder>;
 		_id: string;
 		name: string;
 		email: string;
@@ -23,24 +26,32 @@ interface IUser {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const session = await getSession(ctx);
 
-	const endpoint = `${process.env.BASE_URL}${GET_USER}/${session?.user?.email}`;
-	console.log(endpoint);
-	const { statusCode, message, data, error } = await fetchGetJSON(endpoint);
+	let endpoint = `${process.env.BASE_URL}${GET_USER}/${session?.user?.email}`;
+	const { statusCode, message, data: user, error } = await fetchGetJSON(
+		endpoint
+	);
 
 	if (statusCode !== 200) {
 		console.log('error', error);
 		console.log('message', message);
-
 		return {
 			notFound: true,
 		};
-	}
+	} else {
+		endpoint = `${process.env.BASE_URL}${GET_ADRESS}${user._id}`;
+		const { data: adrs } = await fetchGetJSON(endpoint);
+		user.addresses = adrs;
 
-	return {
-		props: {
-			user: data,
-		},
-	};
+		endpoint = `${process.env.BASE_URL}${GET_ORDERS}${user._id}`;
+		const { data: orders } = await fetchGetJSON(endpoint);
+		user.orders = orders;
+
+		return {
+			props: {
+				user: user,
+			},
+		};
+	}
 };
 
 const Profile: NextPage<IUser> = ({ user }) => (
@@ -69,6 +80,16 @@ const Profile: NextPage<IUser> = ({ user }) => (
 							Suas Informações
 						</Heading>
 						<ProfileInfo />
+						<Heading
+							as="h2"
+							size="lg"
+							fontWeight="bold"
+							color="primary.800"
+							textAlign={['center', 'center', 'left', 'left']}
+						>
+							Seus Pedidos
+						</Heading>
+						<Orders orders={user.orders} />
 					</Stack>
 				</Box>
 				<Box marginTop="calc(10vh + 2rem)">
@@ -85,7 +106,7 @@ const Profile: NextPage<IUser> = ({ user }) => (
 						>
 							Seus Endereços
 						</Heading>
-						<Address adresses={user.adresses} />
+						<Address addresses={user.addresses} />
 					</Stack>
 				</Box>
 			</SimpleGrid>

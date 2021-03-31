@@ -60,8 +60,6 @@ const AddressForm: React.FC<IProps> = ({ address }) => {
 				) => {
 					setSubmitting(true);
 
-					console.log(values);
-
 					try {
 						if (values._id) {
 							const { message, statusCode, data } = await fetchPostJSON(

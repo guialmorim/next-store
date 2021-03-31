@@ -24,9 +24,7 @@ export default async (
 	switch (method) {
 		case 'GET':
 			try {
-				const user = await User.findOne({ email: email as string })
-					.populate({ path: 'adresses' })
-					.exec();
+				const user = await User.findOne({ email: email as string });
 
 				if (user) {
 					response

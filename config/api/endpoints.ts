@@ -5,4 +5,6 @@ export const PUT_ADDRESS = '/api/adresses';
 export const DELETE_ADDRESS = '/api/adresses';
 export const GET_PRODUCTS = '/api/products';
 export const GET_USER = '/api/users';
+export const GET_ORDERS = '/api/orders/';
+export const POST_ORDER = '/api/orders';
 export const GET_USER_WITH_ADRESSES = '/api/users/adresses';

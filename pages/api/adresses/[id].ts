@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
 import Address from '@/models/address';
-import { NativeError } from 'mongoose';
+import User from '@/models/user';
+import mongoose from 'mongoose';
 
 interface ResponseType {
 	statusCode: 200 | 500 | 400 | 404;
@@ -25,12 +26,8 @@ export default async (
 	switch (method) {
 		case 'GET':
 			try {
-				const address = await Address.findById(id)
-					.populate({
-						path: 'user',
-						select: ['name', 'email'],
-					})
-					.exec();
+				//@ts-ignore
+				const address = await Address.find({ user: id });
 
 				if (address) {
 					response
@@ -48,7 +45,7 @@ export default async (
 					statusCode: 400,
 					data: [],
 					message: 'Nenhum endereço encontrado.',
-					error: error.toStrig(),
+					error: error,
 				});
 			}
 			break;
@@ -83,8 +80,17 @@ export default async (
 		case 'DELETE':
 			try {
 				const address = await Address.findByIdAndDelete(id);
-
 				if (address) {
+					const removeReFromUser = await User.findByIdAndUpdate(
+						address.user,
+						{
+							$pull: { addresses: address._id },
+						},
+						{
+							useFindAndModify: false,
+						}
+					);
+
 					response.status(200).json({
 						statusCode: 200,
 						message: 'Endereço apagado com sucesso',
