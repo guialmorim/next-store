@@ -4,8 +4,8 @@ import { Fragment } from 'react';
 import { Heading, Box } from '@chakra-ui/react';
 import Products from '@/components/Products';
 import { GetStaticProps } from 'next';
-import { fetchGetJSON } from '@/utils/api-helpers';
-import { GET_PRODUCTS } from '@/config/api/endpoints';
+import connect from '@/utils/database';
+import Product from '@/models/product';
 
 type TProduct = {
 	sku: string;
@@ -22,12 +22,19 @@ interface IProductProps {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-	const products: Array<TProduct> = await fetchGetJSON(
-		process.env.BASE_URL + GET_PRODUCTS
-	);
-	return {
-		props: { products },
-	};
+	try {
+		connect();
+		const products = await Product.find();
+		console.log(products);
+		return {
+			props: { products: JSON.parse(JSON.stringify(products)) },
+		};
+	} catch (error) {
+		console.log(error);
+		return {
+			props: {},
+		};
+	}
 };
 
 const ProductsPage: NextPage<IProductProps> = ({ products }) => (
