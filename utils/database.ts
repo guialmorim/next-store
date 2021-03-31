@@ -8,7 +8,8 @@ const connection: DbConnection = {
 	isConnected: false,
 };
 
-let uri = process.env.MONGODB_URI || '';
+let uri =
+	'mongodb+srv://nextstoreuser:nextstorepassword@mymongocluster.zzz65.mongodb.net/next-store?retryWrites=true&w=majority';
 let dbName = process.env.MONGODB_DBNAME;
 
 if (!uri) {
