@@ -4,11 +4,11 @@ import { NextPage } from 'next';
 import Products from '@/components/Products';
 import Land from '@/components/Land';
 import { GetStaticProps } from 'next';
-import { fetchGetJSON } from '@/utils/api-helpers';
-import { GET_ADRESS, GET_PRODUCTS } from '@/config/api/endpoints';
 import { Box, Heading, Button, Flex } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import Footer from '@/components/Footer';
+import connect from '@/utils/database';
+import Product from '@/models/product';
 
 type TProduct = {
 	sku: string;
@@ -25,12 +25,19 @@ interface IProductProps {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-	const products: Array<TProduct> = await fetchGetJSON(
-		process.env.BASE_URL + GET_PRODUCTS
-	);
-	return {
-		props: { products },
-	};
+	try {
+		connect();
+		const products = await Product.find();
+		console.log(products);
+		return {
+			props: { products: JSON.parse(JSON.stringify(products)) },
+		};
+	} catch (error) {
+		console.log(error);
+		return {
+			props: {},
+		};
+	}
 };
 
 const Home: NextPage<IProductProps> = ({ products }) => (
