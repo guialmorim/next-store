@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
-import Address from '@/models/address';
-import User from '@/models/user';
+import Address from '@/Models/address';
+import User from '@/Models/user';
 import mongoose from 'mongoose';
 
 interface ResponseType {

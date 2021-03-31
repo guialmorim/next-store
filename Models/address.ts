@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IUserMongooseModel, IUser } from '@/models/user';
+import { IUserMongooseModel, IUser } from '@/Models/user';
 
 export interface IAddress {
 	street: string;

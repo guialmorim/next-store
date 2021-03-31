@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
-import Product from '@/models/product';
+import Product from '@/Models/product';
 
 connect();
 

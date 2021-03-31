@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
-import User from '@/models/user';
-import Address from '@/models/address';
+import User from '@/Models/user';
+import Address from '@/Models/address';
 
 interface ResponseType {
 	statusCode: 200 | 500 | 400 | 404;

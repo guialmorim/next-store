@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Text, Box } from '@chakra-ui/react';
-import { IOrder } from '@/models/order';
+import { IOrder } from '@/Models/order';
 
 type TProps = {
 	orders: Array<IOrder>;

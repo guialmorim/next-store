@@ -8,7 +8,7 @@ import { Box, Heading, Button, Flex } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import Footer from '@/components/Footer';
 import connect from '@/utils/database';
-import Product from '@/models/product';
+import Product from '@/Models/product';
 
 type TProduct = {
 	sku: string;
