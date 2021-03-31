@@ -5,7 +5,7 @@ import { Heading, Box } from '@chakra-ui/react';
 import Products from '@/components/Products';
 import { GetStaticProps } from 'next';
 import connect from '@/utils/database';
-import Product from '@/models/product';
+import Product from '@/Models/product';
 
 type TProduct = {
 	sku: string;

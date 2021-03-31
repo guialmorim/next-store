@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import Head from 'next/head';
 import { NextPage, GetServerSideProps } from 'next';
-import { IOrder } from '@/models/order';
+import { IOrder } from '@/Models/order';
 import Address, { TAddress } from '@/components/Address';
 import Orders from '@/components/Orders';
 import ProfileInfo from '@/components/ProfileInfo';

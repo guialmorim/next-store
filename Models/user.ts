@@ -3,8 +3,8 @@ import {
 	IAddress,
 	IAddressMongooseModel,
 	AddressSchema,
-} from '@/models/address';
-import { OrderSchema } from '@/models/order';
+} from '@/Models/address';
+import { OrderSchema } from '@/Models/order';
 
 export interface IUser {
 	_id: string;

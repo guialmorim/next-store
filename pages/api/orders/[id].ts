@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
-import Order from '@/models/order';
-import { IUserMongooseModel } from '@/models/user';
+import Order from '@/Models/order';
+import { IUserMongooseModel } from '@/Models/user';
 
 interface ResponseType {
 	statusCode: 200 | 404 | 400 | 500;
