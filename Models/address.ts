@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IUserMongooseModel, IUser } from '@/models/user';
+import { UserSchema, IUserMongooseModel, IUser } from '@/models/user';
 
 export interface IAddress {
 	street: string;
@@ -19,14 +19,18 @@ export interface IAddressMongooseModel extends Document {
 	user: IUserMongooseModel;
 }
 
-const AddressSchema: Schema = new Schema(
+export const AddressSchema: Schema<IAddressMongooseModel> = new Schema(
 	{
 		street: { type: String, required: true },
 		number: { type: Number, required: true },
 		city: { type: String, required: true },
 		state: { type: String, required: true },
 		zip: { type: Number, required: true, min: 8 },
-		user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+		user: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+			required: true,
+		},
 	},
 	{
 		timestamps: true,

@@ -1,9 +1,12 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IProduct extends Document {
+	sku: string;
 	name: string;
 	price: number;
-	qtd: number;
+	description: string;
+	image: string;
+	currency: string;
 }
 
 const ProductSchema: Schema = new Schema(

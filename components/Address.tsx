@@ -19,11 +19,11 @@ export type TAddress = {
 };
 
 type TProps = {
-	adresses: Array<TAddress>;
+	addresses: Array<TAddress>;
 	children?: ReactNode;
 };
 
-const Addresses: React.FC<TProps> = ({ adresses }) => {
+const Addresses: React.FC<TProps> = ({ addresses }) => {
 	const router = useRouter();
 
 	const OnDeleteAddress = async (id: string) => {
@@ -55,8 +55,8 @@ const Addresses: React.FC<TProps> = ({ adresses }) => {
 
 	return (
 		<>
-			{adresses?.length > 0 ? (
-				adresses.map((address) => (
+			{addresses?.length > 0 ? (
+				addresses.map((address) => (
 					<Box
 						key={address._id}
 						m="0 auto"

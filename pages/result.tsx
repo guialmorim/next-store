@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -31,8 +31,12 @@ const ResultPage: NextPage = () => {
 		fetchGetJSON
 	);
 
-	console.log(data);
-	console.log(error);
+	const { data: updatedOrder, error: updatedOrderError } = useSWR(
+		router.query.order_id
+			? `/api/checkout_sessions/order/${router.query.order_id}`
+			: null,
+		fetchGetJSON
+	);
 
 	if (error || data?.statusCode === 500) {
 		return (
@@ -111,6 +115,9 @@ const ResultPage: NextPage = () => {
 							<Text fontSize="md" mt={2}>
 								<ClearCart />
 							</Text>
+							{updatedOrder.data.paid ? (
+								<Text mt={2}>ID do seu pedido: {updatedOrder.data._id}</Text>
+							) : null}
 							<Link href="/">
 								<Button size="md" mt="24px" rightIcon={<ArrowLeftIcon />}>
 									Voltar ao inicio

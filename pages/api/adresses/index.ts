@@ -20,11 +20,11 @@ export default async (
 	switch (method) {
 		case 'GET':
 			try {
-				const adressess = await Address.find({ user: body.userId });
-				if (adressess.length > 0) {
+				const addresses = await Address.find({ user: body.userId });
+				if (addresses.length > 0) {
 					response
 						.status(200)
-						.json({ message: 'Sucesso', statusCode: 200, data: adressess });
+						.json({ message: 'Sucesso', statusCode: 200, data: addresses });
 				} else {
 					response
 						.status(404)
@@ -38,23 +38,17 @@ export default async (
 			break;
 		case 'POST':
 			try {
-				console.log(body);
-
 				const address = await Address.create(body);
 				if (address) {
-					console.log(body);
-
 					const addReftoUser = await User.findByIdAndUpdate(
 						body.user,
 						{
-							$push: { adresses: address._id },
+							$push: { addresses: address._id },
 						},
 						{
 							useFindAndModify: false,
 						}
 					);
-					console.log(addReftoUser);
-
 					if (addReftoUser) {
 						response.status(200).json({
 							statusCode: 200,

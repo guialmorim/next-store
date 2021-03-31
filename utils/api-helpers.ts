@@ -1,3 +1,5 @@
+import { GET_ORDERS, POST_ORDER } from '@/config/api/endpoints';
+
 export async function fetchGetJSON(endpoint: string) {
 	try {
 		const data = await fetch(endpoint);
@@ -33,4 +35,27 @@ export async function fetchPostJSON(
 	} catch (err) {
 		throw new Error(err.message);
 	}
+}
+
+export async function handleCreateOrder(
+	user: string,
+	address: string,
+	products: string[]
+) {
+	const endpoint = `${POST_ORDER}`;
+	const response = await fetchPostJSON(endpoint, 'POST', {
+		paid: false,
+		user: user,
+		address: address,
+		products: products,
+	});
+	return response;
+}
+
+export async function handleUpdateOrder(orderId: string, paid: true | false) {
+	const endpoint = `${GET_ORDERS}${orderId}`;
+	const response = await fetchPostJSON(endpoint, 'PUT', {
+		paid: paid,
+	});
+	return response;
 }

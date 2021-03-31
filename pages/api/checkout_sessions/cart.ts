@@ -36,7 +36,7 @@ export default async function handler(
 			}
 
 			// Validate the cart details that were sent from the client.
-			const cartItems = req.body;
+			const cartItems = req.body.cartDetails;
 			const line_items = validateCartItems(products, cartItems);
 			// Create Checkout Sessions from body params.
 			const params: Stripe.Checkout.SessionCreateParams = {
@@ -48,7 +48,7 @@ export default async function handler(
 				},
 				mode: 'payment',
 				line_items,
-				success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
+				success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}&order_id=${req.body.orderId}`,
 				cancel_url: `${req.headers.origin}/cart`,
 			};
 			const checkoutSession: Stripe.Checkout.Session = await stripe.checkout.sessions.create(

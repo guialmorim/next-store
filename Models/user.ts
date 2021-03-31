@@ -1,21 +1,26 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IAddress, IAddressMongooseModel } from '@/models/address';
+import {
+	IAddress,
+	IAddressMongooseModel,
+	AddressSchema,
+} from '@/models/address';
+import { OrderSchema } from '@/models/order';
 
 export interface IUser {
 	_id: string;
 	name: String;
 	email: String;
-	adresses: IAddress[];
+	addresses: IAddress[];
 }
 
 export interface IUserMongooseModel extends Document {
 	name: String;
 	email: String;
 	age: Number;
-	adresses: IAddressMongooseModel[];
+	addresses: IAddressMongooseModel[];
 }
 
-const UserSchema: Schema = new Schema(
+export const UserSchema: Schema<IUserMongooseModel> = new Schema(
 	{
 		name: { type: String, required: true },
 		email: { type: String, required: true },
@@ -24,10 +29,16 @@ const UserSchema: Schema = new Schema(
 			required: true,
 			min: 18,
 		},
-		adresses: [
+		addresses: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
-				ref: 'Address',
+				ref: 'addresses',
+			},
+		],
+		orders: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Order',
 			},
 		],
 	},

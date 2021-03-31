@@ -5,7 +5,7 @@ import Products from '@/components/Products';
 import Land from '@/components/Land';
 import { GetStaticProps } from 'next';
 import { fetchGetJSON } from '@/utils/api-helpers';
-import { GET_PRODUCTS } from '@/config/api/endpoints';
+import { GET_ADRESS, GET_PRODUCTS } from '@/config/api/endpoints';
 import { Box, Heading, Button, Flex } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import Footer from '@/components/Footer';

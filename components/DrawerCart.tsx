@@ -38,41 +38,18 @@ interface IDrawerCartProps {
 const DrawerCart: React.FC<IDrawerCartProps> = ({ isOpen, onClose }) => {
 	const [loading, setLoading] = React.useState(false);
 	const [cartEmpty, setCartEmpty] = React.useState(true);
-	const backGroundColorForItems = useColorModeValue('purple.300', 'purple.700');
-	const colorForItems = useColorModeValue('purple.700', 'purple.300');
 
 	const {
 		formattedTotalPrice,
 		cartCount,
 		cartDetails,
 		clearCart,
-		redirectToCheckout,
 		removeItem,
 	} = useShoppingCart();
 
 	React.useEffect(() => setCartEmpty(!cartCount), [cartCount]);
 
 	const allproducts = Object.keys(cartDetails).map((item) => cartDetails[item]);
-
-	const handleCheckout: (
-		event: React.MouseEvent<HTMLButtonElement>
-	) => void = async (event) => {
-		event.preventDefault();
-		setLoading(true);
-
-		const response = await fetchPostJSON(
-			'/api/checkout_sessions/cart',
-			'POST',
-			cartDetails
-		);
-
-		if (response.statusCode === 500) {
-			Toast({ title: 'Oops!', description: response.message, status: 'error' });
-			return;
-		}
-
-		redirectToCheckout({ sessionId: response.id });
-	};
 
 	const onClearCart = React.useCallback(() => {
 		clearCart();
@@ -173,15 +150,17 @@ const DrawerCart: React.FC<IDrawerCartProps> = ({ isOpen, onClose }) => {
 					</DrawerBody>
 
 					<DrawerFooter>
-						<Button
-							colorScheme="teal"
-							type="submit"
-							disabled={cartEmpty || loading}
-							mr={3}
-							onClick={handleCheckout}
-						>
-							Finalizar Compra
-						</Button>
+						<Link href="/cart">
+							<Button
+								colorScheme="teal"
+								type="submit"
+								disabled={cartEmpty || loading}
+								mr={3}
+								onClick={onClose}
+							>
+								Finalizar Compra
+							</Button>
+						</Link>
 						<Button colorScheme="blue" type="button" onClick={onClearCart}>
 							Limpar Carrinho
 						</Button>

@@ -11,6 +11,9 @@ import DrawerCart from '@/components/DrawerCart';
 import '@/styles/nprogress.css';
 import '@/styles/global.css';
 import 'reflect-metadata';
+import { GET_ADRESS } from '@/config/api/endpoints';
+import { GetStaticProps } from 'next';
+import { fetchGetJSON } from '@/utils/api-helpers';
 
 const customTheme = {
 	...theme,

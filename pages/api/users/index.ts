@@ -12,14 +12,14 @@ export default async (
 	request: NextApiRequest,
 	response: NextApiResponse //<ResponseType>
 ): Promise<void> => {
-	const { method, query } = request;
+	const { method, query, body } = request;
 
 	switch (method) {
 		case 'GET':
 			if (query?.email) {
 				try {
 					const user = await User.findOne({ email: query.email as string })
-						.populate('adresses')
+						.populate('addresses')
 						.exec();
 
 					if (user) {
