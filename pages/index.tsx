@@ -7,8 +7,9 @@ import { GetStaticProps } from 'next';
 import { Box, Heading, Button, Flex } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import Footer from '@/components/Footer';
-import connect from '@/utils/database';
-import Product from '@/Models/product';
+// import connect from '@/utils/database';
+// import Product from '@/Models/product';
+import { products } from '@/config/products';
 
 type TProduct = {
 	sku: string;
@@ -25,19 +26,22 @@ interface IProductProps {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-	try {
-		connect();
-		const products = await Product.find();
-		console.log(products);
-		return {
-			props: { products: JSON.parse(JSON.stringify(products)) },
-		};
-	} catch (error) {
-		console.log(error);
-		return {
-			props: {},
-		};
-	}
+	// try {
+	// 	connect();
+	// 	const products = await Product.find();
+	// 	console.log(products);
+	// 	return {
+	// 		props: { products: JSON.parse(JSON.stringify(products)) },
+	// 	};
+	// } catch (error) {
+	// 	console.log(error);
+	// 	return {
+	// 		props: {},
+	// 	};
+	// }
+	return {
+		props: { products },
+	};
 };
 
 const Home: NextPage<IProductProps> = ({ products }) => (

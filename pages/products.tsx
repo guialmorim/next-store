@@ -4,8 +4,9 @@ import { Fragment } from 'react';
 import { Heading, Box } from '@chakra-ui/react';
 import Products from '@/components/Products';
 import { GetStaticProps } from 'next';
-import connect from '@/utils/database';
-import Product from '@/Models/product';
+// import connect from '@/utils/database';
+// import Product from '@/Models/product';
+import { products } from '@/config/products';
 
 type TProduct = {
 	sku: string;
@@ -22,19 +23,22 @@ interface IProductProps {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-	try {
-		connect();
-		const products = await Product.find();
-		console.log(products);
-		return {
-			props: { products: JSON.parse(JSON.stringify(products)) },
-		};
-	} catch (error) {
-		console.log(error);
-		return {
-			props: {},
-		};
-	}
+	// try {
+	// 	connect();
+	// 	const products = await Product.find();
+	// 	console.log(products);
+	// 	return {
+	// 		props: { products: JSON.parse(JSON.stringify(products)) },
+	// 	};
+	// } catch (error) {
+	// 	console.log(error);
+	// 	return {
+	// 		props: {},
+	// 	};
+	// }
+	return {
+		props: { products },
+	};
 };
 
 const ProductsPage: NextPage<IProductProps> = ({ products }) => (
