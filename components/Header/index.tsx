@@ -31,7 +31,8 @@ const Header: FC<IProps> = ({ OpenCartDrawer }) => {
 			</Styled.Navlogo>
 			<Styled.NavLinks Open={mobileOpen}>
 				<Styled.Link Open={mobileOpen} animationTiming={1 + 0.5}>
-					{session && session.user && (
+					{/* {session && session.user && ( */}
+					{true && (
 						<a onClick={OpenCartDrawer}>
 							Carrinho <AiOutlineShoppingCart style={{ display: 'inline' }} />
 							{cartCount > 0 && (
