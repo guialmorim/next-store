@@ -16,7 +16,7 @@ const options: InitOptions = {
 	// A database is optional, but required to persist accounts in a database
 	database: {
 		type: 'mongodb',
-		url: `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTERNAME}/${process.env.MONGODB_DBNAME}`,
+		url: process.env.MONGODB_URI || '',
 		w: 'majority',
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
