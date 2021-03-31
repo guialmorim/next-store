@@ -77,14 +77,6 @@ const Home: NextPage<IProductProps> = ({ products }) => (
 			>
 				Confira os produtos incríveis que temos!
 			</Heading>
-			<Text>{process.env.MONGODB_URI}</Text>
-			<Text>{process.env.MONGODB_DB}</Text>
-			<Text>{process.env.NEXTAUTH_URL}</Text>
-			<Text>{process.env.AUTH0_CLIENT_ID}</Text>
-			<Text>{process.env.AUTH0_CLIENT_SECRET}</Text>
-			<Text>{process.env.AUTH0_DOMAIN}</Text>
-			<Text>{process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}</Text>
-			<Text>{process.env.STRIPE_SECRET_KEY}</Text>
 			<Products products={products} preview={true} />
 			<Box my="2rem">
 				<Link href="/products">
