@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connect from '@/utils/database';
 import User from '@/Models/user';
-import Address from '@/Models/address';
 
 interface ResponseType {
 	statusCode: 200 | 500 | 400 | 404;
@@ -10,16 +9,15 @@ interface ResponseType {
 	error?: string;
 }
 
-console.log('cheguei ao endpoint');
-
-connect();
-
-console.log('executei função do db');
-
 export default async (
 	request: NextApiRequest,
 	response: NextApiResponse<ResponseType>
 ): Promise<void> => {
+	console.log('cheguei ao endpoint');
+
+	await connect();
+
+	console.log('executei função do db');
 	const {
 		method,
 		query: { email },

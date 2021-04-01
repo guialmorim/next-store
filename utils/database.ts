@@ -12,9 +12,7 @@ let uri = process.env.MONGODB_URI || '';
 let dbName = process.env.MONGODB_DBNAME;
 
 console.log('process.env.MONGODB_URI', process.env.MONGODB_URI);
-console.log('uri', uri);
 console.log('process.env.MONGODB_DBNAME', process.env.MONGODB_DBNAME);
-console.log('dbName', dbName);
 
 if (!uri) {
 	throw new Error(
@@ -30,6 +28,7 @@ if (!dbName) {
 
 export default async function connect() {
 	console.log('uri recebida', uri);
+	console.log('connection.isConnected ?', connection.isConnected);
 	if (!connection.isConnected) {
 		const db = await mongoose.connect(uri, {
 			useNewUrlParser: true,
@@ -39,4 +38,5 @@ export default async function connect() {
 		console.log('db.connections[0].readyState', db.connections[0].readyState);
 		connection.isConnected = db.connections[0].readyState === 1;
 	}
+	console.log('FINALIZADA função de acesso ao banco');
 }
