@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react';
 import { Text, Box } from '@chakra-ui/react';
 import { IOrder } from '@/Models/order';
+import { formatCurrencyString } from 'use-shopping-cart';
+import { CURRENCY } from '@/config/stripe';
 
 type TProps = {
 	orders: Array<IOrder>;
@@ -8,10 +10,6 @@ type TProps = {
 };
 
 const Orders: React.FC<TProps> = ({ orders }) => {
-	const formatter = new Intl.NumberFormat([], {
-		style: 'currency',
-		currency: 'BRL',
-	});
 	return (
 		<>
 			{orders?.length > 0 ? (
@@ -36,6 +34,14 @@ const Orders: React.FC<TProps> = ({ orders }) => {
 							>
 								ID: {order._id}
 							</Text>
+							<Text
+								color="gray.600"
+								fontWeight="bold"
+								letterSpacing="wide"
+								fontSize="xs"
+							>
+								{`${order.paid ? 'Pedido Pago' : 'Pagamento Pendente'}`}
+							</Text>
 
 							<Text fontWeight="bold" fontSize="md" my="0.6rem">
 								Endereço:
@@ -53,7 +59,11 @@ const Orders: React.FC<TProps> = ({ orders }) => {
 
 							{order?.products?.map((prod) => (
 								<Text fontSize="xs">
-									{prod.name} - {formatter.format(prod.price)}
+									{prod.name} -{' '}
+									{formatCurrencyString({
+										value: prod.price,
+										currency: CURRENCY,
+									})}
 								</Text>
 							))}
 						</Box>
