@@ -41,17 +41,17 @@ const Orders: React.FC<TProps> = ({ orders }) => {
 								Endereço:
 							</Text>
 							<Text fontSize="md">
-								{order.address.street} - {order.address.number}
+								{order.address?.street} - {order.address?.number}
 							</Text>
 							<Text fontSize="sm">
-								{order.address.city} - {order.address.state}
+								{order.address?.city} - {order.address?.state}
 							</Text>
 
 							<Text fontWeight="bold" fontSize="md" my="0.6rem">
 								Produtos:
 							</Text>
 
-							{order.products.map((prod) => (
+							{order?.products?.map((prod) => (
 								<Text fontSize="xs">
 									{prod.name} - {formatter.format(prod.price)}
 								</Text>

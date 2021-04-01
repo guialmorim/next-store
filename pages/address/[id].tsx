@@ -38,8 +38,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	}
 
 	if (id !== 'new') {
-		endpoint = `${process.env.BASE_URL}${GET_ADRESS}${id}`;
-		const { statusCode, message, data, error } = await fetchGetJSON(endpoint);
+		endpoint = `${process.env.BASE_URL}${GET_ADRESS}${user._id}`;
+		const { statusCode, message, data: adrs, error } = await fetchGetJSON(
+			endpoint
+		);
 
 		if (statusCode !== 200) {
 			console.log('error', error);
@@ -50,7 +52,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			};
 		}
 
-		let address = data;
+		if (!adrs || adrs?.length <= 0) {
+			return {
+				notFound: true,
+			};
+		}
+
+		const address: TAddress = adrs.find((adr: TAddress) => adr._id === id);
 		address.user = user._id;
 
 		return {
