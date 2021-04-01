@@ -2,7 +2,7 @@
 
 An complete e-commerce web application using [**Next.js**](https://github.com/zeit/next.js/) and [**MongoDB**](https://www.mongodb.com/), designed with simplicity for learning and real-world applicability in mind.
 
-### See an [LIVE EXAMPLE!](https://next-store.vercel.app) ✨
+### See an [LIVE EXAMPLE!](https://next-store-guialmorim.vercel.app) ✨
 
 ### This project uses only [Typescript](https://www.typescriptlang.org)
 
