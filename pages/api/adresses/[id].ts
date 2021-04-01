@@ -115,7 +115,6 @@ export default async (
 			}
 			break;
 		default:
-			response.setHeader('Allow', 'POST');
 			response.status(405).end('Method Not Allowed');
 			break;
 	}
