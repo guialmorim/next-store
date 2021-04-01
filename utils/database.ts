@@ -1,4 +1,8 @@
 import mongoose from 'mongoose';
+import AddressSchema, { IAddressMongooseModel } from '@/Models/address';
+import OrderSchema, { IOrderMongooseModel } from '@/Models/order';
+import ProductSchema, { IProduct } from '@/Models/product';
+import UserSchema, { IUserMongooseModel } from '@/Models/user';
 
 type DbConnection = {
 	isConnected: boolean;
@@ -9,7 +13,7 @@ const connection: DbConnection = {
 };
 
 let uri = process.env.MONGODB_URI || '';
-let dbName = process.env.MONGODB_DBNAME;
+let dbName = process.env.MONGODB_DBNAME || '';
 
 console.log('process.env.MONGODB_URI', process.env.MONGODB_URI);
 console.log('process.env.MONGODB_DBNAME', process.env.MONGODB_DBNAME);
@@ -26,7 +30,7 @@ if (!dbName) {
 	);
 }
 
-export default async function connect() {
+export async function connect() {
 	console.log('uri recebida', uri);
 	console.log('connection.isConnected ?', connection.isConnected);
 	if (!connection.isConnected) {
@@ -39,4 +43,22 @@ export default async function connect() {
 		connection.isConnected = db.connections[0].readyState === 1;
 	}
 	console.log('FINALIZADA função de acesso ao banco');
+}
+
+export function registerModels() {
+	if (!mongoose.models.Product) {
+		mongoose.model<IProduct>('Product', ProductSchema);
+	}
+
+	if (!mongoose.models.Address) {
+		mongoose.model<IAddressMongooseModel>('Address', AddressSchema);
+	}
+
+	if (!mongoose.models.Order) {
+		mongoose.model<IOrderMongooseModel>('Order', OrderSchema);
+	}
+
+	if (!mongoose.models.User) {
+		mongoose.model<IUserMongooseModel>('User', UserSchema);
+	}
 }

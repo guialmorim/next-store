@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import connect from '@/utils/database';
-import Order from '@/Models/order';
-import { IUserMongooseModel } from '@/Models/user';
+import { connect } from '@/utils/database';
+import mongoose from 'mongoose';
+import { registerModels } from '@/utils/database';
+
+registerModels();
 
 interface ResponseType {
 	statusCode: 200 | 404 | 400 | 500;
@@ -10,12 +12,11 @@ interface ResponseType {
 	error?: any;
 }
 
-connect();
-
 export default async (
 	request: NextApiRequest,
 	response: NextApiResponse<ResponseType>
 ): Promise<void> => {
+	await connect();
 	const { method, query, body } = request;
 
 	switch (method) {
@@ -23,10 +24,12 @@ export default async (
 			if (query?.id) {
 				try {
 					//@ts-ignore
-					const order = await Order.find({ user: query.id })
+					const order = await mongoose.models.Order.find({ user: query.id })
 						.populate('address')
 						.populate('products')
 						.exec();
+
+					console.log('orders', order);
 
 					if (order) {
 						response
@@ -38,6 +41,7 @@ export default async (
 							.json({ statusCode: 404, message: 'Pedido não encontrado.' });
 					}
 				} catch (error) {
+					console.log(error);
 					response.status(500).json({
 						statusCode: 500,
 						message: 'Algo deu errado',
@@ -48,7 +52,7 @@ export default async (
 			break;
 		case 'PUT':
 			try {
-				const order = await Order.findByIdAndUpdate(
+				const order = await mongoose.models.Order.findByIdAndUpdate(
 					query.id,
 					{
 						$set: body,

@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import connect from '@/utils/database';
-import Address from '@/Models/address';
-import User from '@/Models/user';
+import mongoose from 'mongoose';
+import { connect } from '@/utils/database';
+import { registerModels } from '@/utils/database';
+
+registerModels();
 
 interface ResponseType {
 	statusCode: 200 | 500 | 400 | 404;
@@ -9,18 +11,20 @@ interface ResponseType {
 	data?: any;
 	error?: string;
 }
-connect();
 
 export default async (
 	request: NextApiRequest,
 	response: NextApiResponse<ResponseType>
 ): Promise<void> => {
+	await connect();
 	const { method, body } = request;
 
 	switch (method) {
 		case 'GET':
 			try {
-				const addresses = await Address.find({ user: body.userId });
+				const addresses = await mongoose.models.Address.find({
+					user: body.userId,
+				});
 				if (addresses.length > 0) {
 					response
 						.status(200)
@@ -38,9 +42,9 @@ export default async (
 			break;
 		case 'POST':
 			try {
-				const address = await Address.create(body);
+				const address = await mongoose.models.Address.create(body);
 				if (address) {
-					const addReftoUser = await User.findByIdAndUpdate(
+					const addReftoUser = await mongoose.models.User.findByIdAndUpdate(
 						body.user,
 						{
 							$push: { addresses: address._id },
@@ -56,7 +60,7 @@ export default async (
 							data: address,
 						});
 					} else {
-						await Address.findByIdAndDelete(address._id);
+						await mongoose.models.Address.findByIdAndDelete(address._id);
 						response.status(501).json({
 							statusCode: 500,
 							message: 'algo deu errado ao criar o endereço',
