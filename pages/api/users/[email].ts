@@ -10,7 +10,11 @@ interface ResponseType {
 	error?: string;
 }
 
+console.log('cheguei ao endpoint');
+
 connect();
+
+console.log('executei função do db');
 
 export default async (
 	request: NextApiRequest,
@@ -20,11 +24,13 @@ export default async (
 		method,
 		query: { email },
 	} = request;
+	console.log('entrei no endpoint', email);
 
 	switch (method) {
 		case 'GET':
 			try {
 				const user = await User.findOne({ email: email as string });
+				console.log('peguei usuario', user);
 
 				if (user) {
 					response
