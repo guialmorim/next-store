@@ -66,10 +66,6 @@ export default async (
 							message: 'algo deu errado ao criar o endereço',
 						});
 					}
-
-					response
-						.status(400)
-						.json({ statusCode: 400, message: 'algo deu errado' });
 				} else {
 					response
 						.status(400)
