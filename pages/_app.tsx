@@ -5,7 +5,7 @@ import Router from 'next/router';
 import NProgress from 'nprogress';
 import Header from '@/components/Header';
 import CartProvider from '@/components/CartProvider';
-import { ChakraProvider, theme, CSSReset, Box } from '@chakra-ui/react';
+import { ChakraProvider, theme, CSSReset } from '@chakra-ui/react';
 import DrawerCart from '@/components/DrawerCart';
 
 import '@/styles/nprogress.css';

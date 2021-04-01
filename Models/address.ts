@@ -37,6 +37,4 @@ export const AddressSchema: Schema<IAddressMongooseModel> = new Schema(
 	}
 );
 
-export default (mongoose.models
-	.Address as mongoose.Model<IAddressMongooseModel>) ||
-	mongoose.model<IAddressMongooseModel>('Address', AddressSchema);
+export default AddressSchema;

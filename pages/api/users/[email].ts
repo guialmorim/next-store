@@ -1,6 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import connect from '@/utils/database';
-import User from '@/Models/user';
+import { connect } from '@/utils/database';
+import mongoose from 'mongoose';
+import { registerModels } from '@/utils/database';
+
+registerModels();
 
 interface ResponseType {
 	statusCode: 200 | 500 | 400 | 404;
@@ -27,7 +30,9 @@ export default async (
 	switch (method) {
 		case 'GET':
 			try {
-				const user = await User.findOne({ email: email as string });
+				const user = await mongoose.models.User.findOne({
+					email: email as string,
+				});
 				console.log('peguei usuario', user);
 
 				if (user) {

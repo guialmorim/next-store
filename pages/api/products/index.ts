@@ -1,19 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import connect from '@/utils/database';
-import Product from '@/Models/product';
+import { connect } from '@/utils/database';
+import mongoose from 'mongoose';
+import { registerModels } from '@/utils/database';
 
-connect();
+registerModels();
 
 export default async (
 	request: NextApiRequest,
 	response: NextApiResponse
 ): Promise<void> => {
+	await connect();
 	const { method, body } = request;
 
 	switch (method) {
 		case 'GET':
 			try {
-				const products = await Product.find();
+				const products = await mongoose.models.Product.find();
 				if (products.length > 0) {
 					response.status(200).json(products);
 				} else {
@@ -25,7 +27,7 @@ export default async (
 			break;
 		case 'POST':
 			try {
-				const product = await Product.create(body);
+				const product = await mongoose.models.Product.create(body);
 				if (product) {
 					response.status(201).json({ message: 'Produto criado' });
 				} else {

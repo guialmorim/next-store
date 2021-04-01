@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import connect from '@/utils/database';
-import Order from '@/Models/order';
-import { IUserMongooseModel } from '@/Models/user';
+import { connect } from '@/utils/database';
+import mongoose from 'mongoose';
+import { registerModels } from '@/utils/database';
+
+registerModels();
 
 interface ResponseType {
 	statusCode: 200 | 404 | 400 | 500;
@@ -10,19 +12,18 @@ interface ResponseType {
 	error?: any;
 }
 
-connect();
-
 export default async (
 	request: NextApiRequest,
 	response: NextApiResponse<ResponseType>
 ): Promise<void> => {
+	await connect();
 	const { method, query } = request;
 
 	switch (method) {
 		case 'GET':
 			if (query?.id) {
 				try {
-					const order = await Order.findByIdAndUpdate(
+					const order = await mongoose.models.Order.findByIdAndUpdate(
 						query.id,
 						{
 							$set: { paid: true },

@@ -1,24 +1,28 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import connect from '@/utils/database';
-import User from '@/Models/user';
+import { connect } from '@/utils/database';
+import mongoose from 'mongoose';
+import { registerModels } from '@/utils/database';
+
+registerModels();
 
 interface ResponseType {
 	message: string;
 }
 
-connect();
-
 export default async (
 	request: NextApiRequest,
 	response: NextApiResponse //<ResponseType>
 ): Promise<void> => {
+	await connect();
 	const { method, query, body } = request;
 
 	switch (method) {
 		case 'GET':
 			if (query?.email) {
 				try {
-					const user = await User.findOne({ email: query.email as string })
+					const user = await mongoose.models.User.findOne({
+						email: query.email as string,
+					})
 						.populate('addresses')
 						.exec();
 
@@ -34,7 +38,7 @@ export default async (
 				}
 			} else {
 				try {
-					const users = await User.find();
+					const users = await mongoose.models.User.find();
 					if (users.length > 0) {
 						response.status(200).json(users);
 					} else {
@@ -50,7 +54,7 @@ export default async (
 			break;
 		case 'POST':
 			try {
-				const user = await User.create(body);
+				const user = await mongoose.models.User.create(body);
 				if (user) {
 					response.status(201).json({ message: 'User created' });
 				} else {

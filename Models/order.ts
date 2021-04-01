@@ -41,5 +41,4 @@ export const OrderSchema: Schema<IOrderMongooseModel> = new Schema(
 	}
 );
 
-export default (mongoose.models.Order as mongoose.Model<IOrderMongooseModel>) ||
-	mongoose.model<IOrderMongooseModel>('Order', OrderSchema);
+export default OrderSchema;

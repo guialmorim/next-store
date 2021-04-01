@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import connect from '@/utils/database';
-import Address from '@/Models/address';
-import User from '@/Models/user';
+import mongoose from 'mongoose';
+import { connect } from '@/utils/database';
+import { registerModels } from '@/utils/database';
+
+registerModels();
 
 interface ResponseType {
 	statusCode: 200 | 500 | 400 | 404;
@@ -10,12 +12,11 @@ interface ResponseType {
 	error?: string;
 }
 
-connect();
-
 export default async (
 	request: NextApiRequest,
 	response: NextApiResponse<ResponseType>
 ): Promise<void> => {
+	await connect();
 	const {
 		method,
 		body,
@@ -26,7 +27,7 @@ export default async (
 		case 'GET':
 			try {
 				//@ts-ignore
-				const address = await Address.find({ user: id });
+				const address = await mongoose.models.Address.find({ user: id });
 
 				if (address) {
 					response
@@ -50,11 +51,15 @@ export default async (
 			break;
 		case 'PUT':
 			try {
-				const address = await Address.findByIdAndUpdate(id, body, {
-					new: true,
-					runValidators: true,
-					useFindAndModify: false,
-				});
+				const address = await mongoose.models.Address.findByIdAndUpdate(
+					id,
+					body,
+					{
+						new: true,
+						runValidators: true,
+						useFindAndModify: false,
+					}
+				);
 
 				if (address) {
 					response.status(201).json({
@@ -78,9 +83,9 @@ export default async (
 			break;
 		case 'DELETE':
 			try {
-				const address = await Address.findByIdAndDelete(id);
+				const address = await mongoose.models.Address.findByIdAndDelete(id);
 				if (address) {
-					const removeReFromUser = await User.findByIdAndUpdate(
+					const removeReFromUser = await mongoose.models.User.findByIdAndUpdate(
 						address.user,
 						{
 							$pull: { addresses: address._id },

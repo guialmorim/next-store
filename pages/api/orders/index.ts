@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import connect from '@/utils/database';
-import Order from '@/Models/order';
-import User from '@/Models/user';
+import { connect } from '@/utils/database';
+import mongoose from 'mongoose';
+import { registerModels } from '@/utils/database';
+
+registerModels();
 
 interface ResponseType {
 	statusCode: 200 | 404 | 400 | 500;
@@ -10,19 +12,18 @@ interface ResponseType {
 	error?: any;
 }
 
-connect();
-
 export default async (
 	request: NextApiRequest,
 	response: NextApiResponse<ResponseType>
 ): Promise<void> => {
+	await connect();
 	const { method, body } = request;
 	switch (method) {
 		case 'POST':
 			try {
-				const order = await Order.create(body);
+				const order = await mongoose.models.Order.create(body);
 				if (order) {
-					const addReftoUser = await User.findByIdAndUpdate(
+					const addReftoUser = await mongoose.models.User.findByIdAndUpdate(
 						body.user,
 						{
 							$push: { orders: order._id },
@@ -38,7 +39,7 @@ export default async (
 							data: order,
 						});
 					} else {
-						await Order.findByIdAndDelete(order._id);
+						await mongoose.models.Order.findByIdAndDelete(order._id);
 						response.status(501).json({
 							statusCode: 500,
 							message: 'Algo deu errado ao criar o pedido',

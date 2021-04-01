@@ -1,17 +1,19 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import connect from '@/utils/database';
-import Product, { IProduct } from '@/Models/product';
+import { connect } from '@/utils/database';
+import mongoose from 'mongoose';
+import { registerModels } from '@/utils/database';
+
+registerModels();
 
 interface ResponseType {
 	message: string;
 }
 
-connect();
-
 export default async (
 	request: NextApiRequest,
 	response: NextApiResponse //<ResponseType>
 ): Promise<void> => {
+	await connect();
 	const {
 		method,
 		body,
@@ -21,7 +23,7 @@ export default async (
 	switch (method) {
 		case 'GET':
 			try {
-				const product = await Product.findById(id);
+				const product = await mongoose.models.Product.findById(id);
 				if (product) {
 					response.status(200).json(product);
 				} else {
@@ -33,10 +35,14 @@ export default async (
 			break;
 		case 'PUT':
 			try {
-				const product = await Product.findByIdAndUpdate(id, body, {
-					new: true,
-					runValidators: true,
-				});
+				const product = await mongoose.models.Product.findByIdAndUpdate(
+					id,
+					body,
+					{
+						new: true,
+						runValidators: true,
+					}
+				);
 
 				if (product) {
 					response
@@ -51,7 +57,7 @@ export default async (
 			break;
 		case 'DELETE':
 			try {
-				const product = await Product.deleteOne({ _id: id });
+				const product = await mongoose.models.Product.deleteOne({ _id: id });
 
 				if (product) {
 					response.status(200).json({ message: 'Produto apagado' });
